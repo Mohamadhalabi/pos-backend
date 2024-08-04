@@ -41,77 +41,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row  ">
-                                <div class="col form-group ">
-                                    <div class="form-group">
-                                        <label class="form-label required "
-                                               for="description_{{$item->code}}">{{trans('backend.category.description')}}</label>
-                                        <textarea type="text" class="form-control" id="description_{{$item->code}}"
-                                                  name="description_{{$item->code}}"> {{old('description_'.$item->code ,$category->getTranslation( 'description',$item->code))}}</textarea>
-                                        @error('description_'.$item->code)<b class="text-danger"> <i
-                                                    class="las la-exclamation-triangle"></i> {{$message}}</b>@enderror
-
-                                    </div>
-                                </div>
-                            </div>
-                            {!! form_seo($item->code , $key ,old('meta_title_'.$item->code,$category->getTranslation('meta_title', $item->code)),old('meta_description_'.$item->code,$category->getTranslation('meta_description', $item->code))) !!}
-
                         </div>
                     @endforeach
-
-                </div>
-            </div>
-        </div>
-        <div class="card mt-4">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col form-group ">
-                        <label class="form-label required"
-                               for="slug">{{trans('backend.category.slug')}}</label>
-                        <input type="text" class="form-control" id="slug" data-id="{{$category->id}}"
-                               name="slug" value="{{old('slug', $category->slug)}}">
-                        <b class="text-danger" id="message_slug">     @error('slug') <i
-                                    class="las la-exclamation-triangle"></i> {{$message}} @enderror</b>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col form-group ">
-                        <label class="form-label"
-                               for="parent">{{trans('backend.category.parent')}}</label>
-                        <select class="form-control  " data-control="select2" name="parent" id="parent">
-                            <option @if( old('parent',$category->parent_id) == 0 ) selected
-                                    @endif value="0">{{trans('backend.category.parent')}}</option>
-                            {!! \App\Models\Category::select2(old('parent',$category->parent_id) ,0,0,[ $category->id]) !!}
-
-                        </select>
-                        @error('parent')<b class="text-danger"> <i
-                                    class="las la-exclamation-triangle"></i> {{$message}}</b>@enderror
-
-                    </div>
-                    <div class="col form-group " id="category_type">
-                        <label class="form-label" for="type">{{trans('backend.category.type')}}</label>
-                        <select class="form-control  " data-control="select2" name="type" id="type">
-
-                            <option @if(old('type', $category->type) == "physical") selected
-                                    @endif  value="physical">{{trans('backend.category.physical')}}</option>
-                            <option @if( old('type', $category->type) == "software") selected
-                                    @endif  value="software">{{trans('backend.category.software')}}</option>
-
-                        </select>
-                        @error('parent')<b class="text-danger"> <i
-                                    class="las la-exclamation-triangle"></i> {{$message}}</b>@enderror
-
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col form-group ">
-                        <label class="form-label" for="banner">{{trans('backend.category.form_banner')}}</label>
-                        <br>
-                        {!! single_image('banner' , media_file(old('banner', $category->banner)) , old('banner', $category->banner),'image',[  'width'=>1200 , 'height'=>300]   ) !!}
-                        <br>
-                        @error('banner')<b class="text-danger"> <i
-                                    class="las la-exclamation-triangle"></i> {{$message}}</b>@enderror
-                    </div>
                     <div class="col form-group ">
                         <label class="form-label" for="icon">{{trans('backend.category.form_icon')}}</label>
                         <br>
@@ -121,7 +52,10 @@
                                     class="las la-exclamation-triangle"></i> {{$message}}</b>@enderror
                     </div>
                 </div>
-
+            </div>
+        </div>
+        <div class="card mt-4">
+            <div class="card-body">
                 <div class="form-group row">
                     <div class="col  align-items-center">
                         <div class="form-group  align-items-center">
@@ -145,33 +79,4 @@
         </div>
         </form>
     </div>
-@endsection
-@section('script')
-    {!! editor_script() !!}
-
-    @foreach(get_languages() as $key=> $item)
-        <script>
-            CKEDITOR.replace(document.querySelector('#description_{{$item->code}}'));
-
-        </script>
-        {!! script_check_slug(route('backend.categories.check.slug' , 'slug')) !!}
-    @endforeach
-    <script>
-        $(document).on('change','#parent', function(){
-            var parent = $("#parent").val();
-            if(parent !== '0'){
-                $('#category_type').addClass('d-none')
-            }else{
-                $('#category_type').removeClass('d-none')
-            }
-
-            $("#city").children().remove()
-        });
-
-        $(document).ready(function (){
-            $('#parent').change();
-        });
-    </script>
-    @include('backend.shared.seo.script')
-
 @endsection

@@ -29,18 +29,18 @@ class EditRequest extends FormRequest
     {
 
         $rules = [];
-        $rules['slug'] = 'required|unique:categories,slug,'.request()->segment(3).'|max:254';
-        $rules['parent'] = 'required';
-        $rules['banner'] = '';
+        // $rules['slug'] = 'required|unique:categories,slug,'.request()->segment(3).'|max:254';
+        // $rules['parent'] = 'required';
+        // $rules['banner'] = '';
         $rules['icon'] = '';
 
-        $rules['type'] =Rule::requiredIf(empty(request('parent'))&& empty(request('parent')));
+        // $rules['type'] =Rule::requiredIf(empty(request('parent'))&& empty(request('parent')));
         foreach (get_languages() as $lang){
             if ($lang->is_default){
                 $rules['name_'.$lang->code] = 'required';
-                $rules['description_'.$lang->code] = 'required';
-                $rules['meta_description_'.$lang->code] = 'required';
-                $rules['meta_title_'.$lang->code] = 'required';
+                // $rules['description_'.$lang->code] = 'required';
+                // $rules['meta_description_'.$lang->code] = 'required';
+                // $rules['meta_title_'.$lang->code] = 'required';
             }
         }
         return $rules;

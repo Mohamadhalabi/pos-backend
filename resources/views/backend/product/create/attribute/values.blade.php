@@ -8,7 +8,7 @@
 
         <div class="card-body">
 
-            <div class="col-12 col-md-12 mb-2">
+            <!-- <div class="col-12 col-md-12 mb-2">
                 <div class="form-group">
                     <label for="slug" class="required form-label">{{trans('backend.product.slug')}}</label>
                     <input type="text" class="form-control" required id="slug" value="{{old('slug')}}" name="slug">
@@ -16,7 +16,7 @@
                     <b class="text-danger" id="error_slug"> @error('slug')<i
                             class="fa fa-exclamation-triangle"></i> {{$message}}@enderror</b>
                 </div>
-            </div>
+            </div> -->
             <div class="row">
                 <div class="col-11">
                     <div class="form-group">

@@ -26,7 +26,7 @@ class EditRequest extends FormRequest
     public function rules()
     {
         $rules = [];
-        $rules['image'] = '';
+        // $rules['image'] = '';
         foreach (get_languages() as $item){
             if($item->is_default)
                 $rules['name_'.$item->code] = 'required';

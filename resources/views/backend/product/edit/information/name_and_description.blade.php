@@ -24,7 +24,7 @@
                                 <b id="error_title_{{$item->code}}" class="text-danger"></b>
                             </div>
                         </div>
-                        <div class="col-12 col-md-12">
+                        <!-- <div class="col-12 col-md-12">
                             <div class="form-group">
                                 <label for="short_title_{{$item->code}}"
                                        class="form-label @if($key == 0 ) required @endif">{{trans('backend.product.short_title')}}</label>
@@ -33,16 +33,16 @@
                                        id="short_title_{{$item->code}}" maxlength="70">
                                 <b id="error_short_title_{{$item->code}}" class="text-danger"></b>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-12 col-md-12">
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="summary_name_{{$item->code}}"
                                        class="form-label  ">{{trans('backend.product.summary_name')}}</label>
                                 <textarea type="text" class="form-control" name="summary_name_{{$item->code}}"
                                           id="summary_name_{{$item->code}}">{{old('summary_name_'.$item->code, $product->getTranslation('summary_name' , $item->code))}}</textarea>
                                 <b id="error_summary_name_{{$item->code}}" class="text-danger"></b>
 
-                            </div>
+                            </div> -->
 
                         <div class="col-12 col-md-12 form-group ">
                             <div class="form-group">
@@ -57,7 +57,7 @@
                             </div>
                         </div>
                         </div>
-                        <div class="col-12 col-md-12">
+                        <!-- <div class="col-12 col-md-12">
                             <div class="form-group">
                                 <label for="faq_{{$item->code}}"
                                        class="form-label  ">{{trans('backend.product.faq')}}</label>
@@ -66,8 +66,8 @@
                                 <b id="error_faq_{{$item->code}}" class="text-danger"></b>
 
                             </div>
-                        </div>
-                        {!! form_seo(  $item->code , $key,$product->getTranslation('meta_title' , $item->code) , $product->getTranslation('meta_description' , $item->code)) !!}
+                        </div> -->
+                        <!-- {!! form_seo(  $item->code , $key,$product->getTranslation('meta_title' , $item->code) , $product->getTranslation('meta_description' , $item->code)) !!} -->
 
                     </div>
 

@@ -37,12 +37,6 @@
             <div class="col-12 col-lg-8 col-md-8">
                 @include('backend.product.create.information.name_and_description')
                 @include('backend.product.create.attribute.values')
-                @include('backend.product.create.attribute.brand')
-                @include('backend.product.create.price.price_renge')
-
-                @include('backend.product.create.media.videos')
-                @include('backend.product.create.media.pdf')
-
             </div>
             <div class="col-12 col-lg-3 col-md-3">
                 @include('backend.product.create.information.more_information')
@@ -50,13 +44,9 @@
                 @include('backend.product.create.attribute.checkbox')
 
                 @include('backend.product.create.media.defualt_image')
-                @include('backend.product.create.media.secondary_image')
+                <!-- @include('backend.product.create.media.secondary_image') -->
                 @include('backend.product.create.media.gallery')
-                @include('backend.product.create.media.twitter_image')
-
                 @include('backend.product.create.price.price')
-                @include('backend.product.create.accessories_and_bundles.accessories')
-                @include('backend.product.create.accessories_and_bundles.bundles')
             </div>
         </div>
 
@@ -67,11 +57,7 @@
     {!! editor_script() !!}
     @foreach(get_languages() as $key=> $item)
         <script>
-
             CKEDITOR.replace('description_{{$item->code}}');
-            CKEDITOR.replace('faq_{{$item->code}}');
-
-
         </script>
     @endforeach
     <script>
@@ -220,10 +206,4 @@
     @php
         $languages = get_languages();
     @endphp
-
-
-    {{--    {!! script_check_slug(route('backend.products.check.slug') ,'slug','short_title_'.$languages[0]->code  ) !!}--}}
-
-    @include('backend.shared.seo.script')
-
 @endsection

@@ -43,7 +43,7 @@
                 <b class="text-danger" id="error_category"> @error('category') <i
                         class="fa fa-exclamation-triangle"></i> {{$message}} @enderror</b>
             </div>
-            <div class="col-12 col-md-12  mt-2 ">
+            <!-- <div class="col-12 col-md-12  mt-2 ">
                 <div class="form-group">
                     <label for="weight" class="required form-label">{{trans('backend.product.weight')}}</label>
                     <input type="number" step="0.01" class="form-control" required id="weight" name="weight"
@@ -51,21 +51,21 @@
                     <b class="text-danger" id="error_weight"> @error('weight')<i class="fa fa-exclamation-triangle"></i> {{$message}}@enderror
                     </b>
                 </div>
-            </div>
-            <div class="col-12 col-md-12  mt-2">
+            </div> -->
+            <!-- <div class="col-12 col-md-12  mt-2">
                 <label for="priority" class="required form-label">{{trans('backend.product.priority')}}</label>
                 <input type="number"  min="1" value="{{old('priority',$product->priority)}}" class="form-control" required id="priority" name="priority">
                 <b class="text-danger" id="error_priority">     @error('priority')
                     <i class="fa fa-exclamation-triangle"></i> {{$message}} @enderror</b>
-            </div>
+            </div> -->
             <div class="col-12 col-md-12">
                 <div class="form-group">
                     <label >{{trans('backend.product.quantity')}}</label>
-                    <input readonly type="number"  class="form-control bg-secondary"
+                    <input type="number" name="quantity" id="quantity"  class="form-control"
                            value="{{$product->quantity}}">
                 </div>
             </div>
-         <div class="col-12 col-md-12  mt-2">
+         <!-- <div class="col-12 col-md-12  mt-2">
                 <label for="colors" class="form-label">{{trans('backend.product.colors')}}</label>
                 <select class="form-control" id="color" name="color">
                     <option @if(old('colors' ,$product->color_id) == "") selected @endif value="">{{trans('backend.global.not_found')}}</option>
@@ -75,9 +75,9 @@
                     @endforeach
                 </select>
                 <b class="text-danger" id="error_color">  @error('color')<i class="fa fa-exclamation-triangle"></i> {{$message}}@enderror</b>
-            </div>
+            </div> -->
         </div>
-        <div class="col-12 col-md-12  mt-2">
+        <!-- <div class="col-12 col-md-12  mt-2">
             <label for="blocked_countries" class="form-label">{{trans('backend.product.blocked_countries')}}</label>
             <select class="form-control select2" multiple id="blocked_countries" name="blocked_countries[]" data-controls="select">
                 <option @if(old('blocked_countries' ,$product->blocked_countries??[] ) == "")  @endif value="">{{trans('backend.global.select_an_option')}}</option>
@@ -87,6 +87,6 @@
                 @endforeach
             </select>
             <b class="text-danger" id="error_blocked_countries">  @error('blocked_countries')<i class="fa fa-exclamation-triangle"></i> {{$message}}@enderror</b>
-        </div>
+        </div> -->
     </div>
 </div>

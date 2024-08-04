@@ -32,7 +32,7 @@ class AttributeController extends Controller
         $datatable_columns['placeholder'] = '';
         $datatable_columns['id'] = 'id';
         $datatable_columns['name'] = 'name';
-        $datatable_columns['image'] = 'image';
+        // $datatable_columns['image'] = 'image';
         $datatable_columns['created_at'] = 'created_at';
         $datatable_columns['updated_at'] = 'updated_at';
         $datatable_columns['status'] = 'status';
@@ -112,15 +112,12 @@ class AttributeController extends Controller
     {
         $attribute = new Attribute();
         $name = [];
-        $image = [];
         foreach (get_languages() as $item) {
             $name[$item->code] = $request->get('name_' . $item->code);
-            $image[$item->code] = $request->get('image_' . $item->code);
         }
         $attribute->name = $name;
         $slug = convertToKebabCase($request->get('name_en'));
         $attribute->slug = check_slug(Attribute::query(), $slug);
-        $attribute->image = $image;
         $attribute->status = $request->has('status') ? 1 : 0;
         $attribute->save();
         return redirect()->route('backend.attributes.index')->with('success', trans('backend.global.success_message.created_successfully'));
@@ -144,13 +141,10 @@ class AttributeController extends Controller
 
         $attribute = Attribute::findOrFail($id);
         $name = [];
-        $image = [];
         foreach (get_languages() as $item) {
             $name[$item->code] = $request->get('name_' . $item->code);
-            $image[$item->code] = $request->get('image_' . $item->code);
         }
         $attribute->name = $name;
-        $attribute->image = $image;
         $attribute->status = $request->has('status') ? 1 : 0;
         $attribute->save();
         return redirect()->route('backend.attributes.edit', $attribute)->with('success', trans('backend.global.success_message.updated_successfully'));

@@ -36,7 +36,6 @@ class SubAttributeController extends Controller
         $datatable_columns['placeholder'] = '';
         $datatable_columns['id'] = 'id';
         $datatable_columns['value'] = 'value';
-        $datatable_columns['image'] = 'image';
         $datatable_columns['created_at'] = 'created_at';
         $datatable_columns['updated_at'] = 'updated_at';
         $datatable_columns['status'] = 'status';
@@ -119,13 +118,11 @@ class SubAttributeController extends Controller
         $value = [];
         foreach (get_languages() as $item) {
             $value[$item->code] = $request->get('value_' . $item->code);
-            $description[$item->code] = $request->get('description_' . $item->code);
         }
         $sub_attribute->value = $value;
 //        $sub_attribute->slug =  convertToKebabCase($sub_attribute->getTranslation('value', 'en'));
         $slug = convertToKebabCase($sub_attribute->getTranslation('value', 'en'));
         $sub_attribute->slug = check_slug(SubAttribute::query(), $slug);
-        $sub_attribute->image = $request->image;
         $sub_attribute->status = $request->has('status') ? 1 : 0;
         $attribute->sub_attributes()->save($sub_attribute);
 
@@ -146,10 +143,8 @@ class SubAttributeController extends Controller
         $value = [];
         foreach (get_languages() as $item) {
             $value[$item->code] = $request->get('value_' . $item->code);
-            $description[$item->code] = $request->get('description_' . $item->code);
         }
         $sub_attribute->value = $value;
-        $sub_attribute->image = $request->image;
         $sub_attribute->status = $request->has('status') ? 1 : 0;
         $sub_attribute->save();
 

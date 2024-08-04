@@ -39,78 +39,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row  ">
-                                    <div class="col form-group ">
-                                        <div class="form-group">
-                                            <label class="form-label @if($key == 0 ) required @endif"
-                                                   for="description_{{$item->code}}">{{trans('backend.category.description')}}</label>
-                                            <textarea type="text" class="form-control" @if($key == 0 ) required @endif id="description_{{$item->code}}"
-                                                      name="description_{{$item->code}}"
-                                            > {{old('description_'.$item->code)}}</textarea>
-                                            @error('description_'.$item->code)<b class="text-danger"> <i
-                                                    class="las la-exclamation-triangle"></i> {{$message}}</b>@enderror
-
-                                        </div>
-                                    </div>
-                                </div>
-                                {!! form_seo($item->code , $key ,old('meta_title_'.$item->code),old('meta_description_'.$item->code)) !!}
-
                             </div>
                         @endforeach
 
                     </div>
-                </div>
-            </div>
-            <div class="card flex-row-fluid mb-2 mt-5  ">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col form-group ">
-                            <label class="form-label required"
-                                   for="slug">{{trans('backend.category.slug')}}</label>
-                            <input required type="text" class="form-control" id="slug"
-                                   name="slug" value="{{old('slug')}}">
-                            <b class="text-danger" id="message_slug">
-                                @error('slug') <i class="las la-exclamation-triangle"></i> {{$message}} @enderror
-                            </b>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col form-group ">
-                            <label class="form-label"
-                                   for="parent">{{trans('backend.category.parent')}}</label>
-                            <select class="form-control parent" data-placeholder="{{trans('backend.category.parent')}}" data-control="select2" name="parent" id="parent">
-                                <option selected value="0">{{trans('backend.category.parent')}}</option>
-                                {!! \App\Models\Category::select2(old('parent') ,0,0) !!}
-                            </select>
-                            @error('parent')<b class="text-danger"> <i
-                                    class="las la-exclamation-triangle"></i> {{$message}}</b>@enderror
-
-                        </div>
-                        <div class="col form-group " id="category_type">
-                            <label class="form-label" for="type">{{trans('backend.category.type')}}</label>
-                            <select class="form-control  " data-control="select2" name="type" id="type">
-
-                                <option
-                                    value="physical" {{old('type')== 'physical'? "selected":""}}>{{trans('backend.category.physical')}}</option>
-                                <option
-                                    value="software" {{old('type')== 'software'? "selected":""}}>{{trans('backend.category.software')}}</option>
-
-                            </select>
-                            @error('type')<b class="text-danger"> <i
-                                    class="las la-exclamation-triangle"></i> {{$message}}</b>@enderror
-
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col form-group ">
-                            <label class="form-label" for="banner">{{trans('backend.category.form_banner')}}</label>
-                            <br>
-                            {!! single_image('banner' , media_file(old('banner')) , old('banner')  ,'image',[  'width'=>1200 , 'height'=>300] ) !!}
-                            <br>
-                            @error('banner')<b class="text-danger"> <i
-                                    class="las la-exclamation-triangle"></i> {{$message}}</b>@enderror
-                        </div>
-                        <div class="col form-group ">
+                    <div class="col form-group ">
                             <label class="form-label" for="icon">{{trans('backend.category.form_icon')}}</label>
                             <br>
                             {!! single_image('icon' , media_file(old('icon')) , old('icon')  ) !!}
@@ -118,7 +51,6 @@
                             @error('icon')<b class="text-danger"> <i
                                     class="las la-exclamation-triangle"></i> {{$message}}</b>@enderror
                         </div>
-                    </div>
 
                     <div class="form-group row">
                         <div class="col  align-items-center">
@@ -135,46 +67,13 @@
                             </div>
                         </div>
                     </div>
-
-                </div>
-                <div class="card-footer d-flex justify-content-end py-6 px-9">
-                    <button type="submit" class="btn btn-primary">{{trans('backend.global.save')}}</button>
                 </div>
             </div>
+            <div class="card-footer d-flex justify-content-end py-6 px-9">
+                    <button type="submit" class="btn btn-primary">{{trans('backend.global.save')}}</button>
+                </div>
         </form>
     </div>
 @endsection
 @section('script')
-    {!! editor_script() !!}
-
-    @foreach(get_languages() as $key=> $item)
-        <script>
-            CKEDITOR.replace(document.querySelector('#description_{{$item->code}}'));
-
-        </script>
-    @endforeach
-    {!! script_check_slug(route('backend.categories.check.slug'),'slug' ,'name_en') !!}
-
-    <script>
-        $(document).on('change','#parent', function(){
-            var parent = $("#parent").val();
-
-            if(parent === '0' || parent == null ){
-                $('#category_type').removeClass('d-none')
-            }else{
-                $('#category_type').addClass('d-none')
-            }
-
-            $("#city").children().remove()
-        });
-
-        $(document).ready(function (){
-            var parent = '{{old('parent')}}'
-            if(parent !== null ){
-                $('#parent').val(parent).change();
-            }
-        });
-    </script>
-    @include('backend.shared.seo.script')
-
 @endsection

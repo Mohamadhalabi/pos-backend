@@ -17,9 +17,6 @@
 
             <!--begin::Card Body-->
             <div class="card-body fs-6 py-15 px-10 py-lg-15 px-lg-15 text-gray-700">
-            {!! select_status() !!}
-                {!! apply_filter_button() !!}
-
                 <div class="table-responsive">
                     <table id="datatable" class="table table-rounded table-striped border gy-7 w-100 gs-7">
                         <thead>
@@ -27,7 +24,7 @@
                             <th style="text-align: center"><input type="checkbox" id="select_all" /></th>
                             <th>{{trans('backend.global.id')}}</th>
                             <th>{{trans('backend.attribute.name')}}</th>
-                            <th>{{trans('backend.attribute.image')}}</th>
+                            <!-- <th>{{trans('backend.attribute.image')}}</th> -->
                             <th>{{trans('backend.global.created_at')}}</th>
                             <th>{{trans('backend.global.updated_at')}} </th>
                             <th>{{trans('backend.global.status')}}</th>

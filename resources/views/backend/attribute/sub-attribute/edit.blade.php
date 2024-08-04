@@ -48,18 +48,6 @@
         </div>
         <div class="card flex-row-fluid mb-2 mt-5  ">
             <div class="card-body">
-                <div class="row">
-                    <div class="col form-group ">
-                        <label class="form-label" for="image">{{trans('backend.attribute.image')}}</label>
-                        <br>
-                        {!! single_image('image' , media_file(old('image', $sub_attribute->image)) , old('image', $sub_attribute->image)  ) !!}
-                        <br>
-                        @error('image')<b class="text-danger"> <i
-                                    class="las la-exclamation-triangle"></i> {{$message}}</b>@enderror
-                    </div>
-
-                </div>
-
                 <div class="form-group row">
                     <div class="col  align-items-center">
                         <div class="form-group  align-items-center">

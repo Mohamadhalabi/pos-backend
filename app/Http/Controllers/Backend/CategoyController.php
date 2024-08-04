@@ -40,8 +40,6 @@ class CategoyController extends Controller
         $datatable_columns['placeholder'] = '';
         $datatable_columns['id'] = 'id';
         $datatable_columns['name'] = 'name';
-        $datatable_columns['parent_id'] = 'parent_id';
-        $datatable_columns['type'] = 'type';
         $datatable_columns['products_count'] = 'products_count';
         $datatable_columns['created_at'] = 'created_at';
         $datatable_columns['updated_at'] = 'updated_at';
@@ -144,30 +142,31 @@ class CategoyController extends Controller
 
         $category = new Category();
         $name = [];
-        $description = [];
-        $meta_title = [];
-        $meta_description = [];
+        // $description = [];
+        // $meta_title = [];
+        // $meta_description = [];
         foreach (get_languages() as $item) {
             $name[$item->code] = $request->get('name_' . $item->code);
-            $description[$item->code] = $request->get('description_' . $item->code);
-            $meta_title[$item->code] = $request->get('meta_title_' . $item->code);
-            $meta_description[$item->code] = $request->get('meta_description_' . $item->code);
+            // $description[$item->code] = $request->get('description_' . $item->code);
+            // $meta_title[$item->code] = $request->get('meta_title_' . $item->code);
+            // $meta_description[$item->code] = $request->get('meta_description_' . $item->code);
         }
         $category->name = $name;
-        $category->description = $description;
-        $category->slug = $request->slug;
+        // $category->description = $description;
 
-        if ($request->parent != 0) {
-            $category->parent_id = $request->parent;
-            $category->type = Category::find($request->parent)->type;
-        } else {
-            $category->type = $request->type;
-        }
+        $category->slug = str_replace(' ', '-', $name['en']);
 
-        $category->banner = $request->banner;
+        // if ($request->parent != 0) {
+            // $category->parent_id = $request->parent;
+            // $category->type = Category::find($request->parent)->type;
+        // } else {
+            // $category->type = $request->type;
+        // }
+
+        // $category->banner = $request->banner;
         $category->icon = $request->icon;
-        $category->meta_title = $meta_title;
-        $category->meta_description = $meta_description;
+        // $category->meta_title = $meta_title;
+        // $category->meta_description = $meta_description;
         $category->status = $request->has('status') ? 1 : 0;
         $category->save();
         return redirect()->route('backend.categories.create')->with('success', trans('backend.global.success_message.created_successfully'));
@@ -192,31 +191,13 @@ class CategoyController extends Controller
 
         $category = Category::findOrFail($id);
         $name = [];
-        $description = [];
-        $meta_title = [];
-        $meta_description = [];
 
         foreach (get_languages() as $item) {
             $name[$item->code] = $request->get('name_' . $item->code);
-            $description[$item->code] = $request->get('description_' . $item->code);
-            $meta_title[$item->code] = $request->get('meta_title_' . $item->code);
-            $meta_description[$item->code] = $request->get('meta_description_' . $item->code);
         }
         $category->name = $name;
-        $category->description = $description;
-        $category->slug = $request->slug;
 
-        if ($request->parent != 0) {
-            $category->parent_id = $request->parent;
-            $category->type = Category::find($request->parent)->type;
-        } else {
-            $category->parent_id = null;
-            $category->type = $request->type;
-        }
-        $category->banner = $request->banner;
         $category->icon = $request->icon;
-        $category->meta_title = $meta_title;
-        $category->meta_description = $meta_description;
         $category->status = $request->has('status') ? 1 : 0;
         $category->save();
         return redirect()->route('backend.categories.edit', $category)->with('success', trans('backend.global.success_message.updated_successfully'));

@@ -39,18 +39,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col form-group ">
-                                        <label class="form-label" for="image">{{trans('backend.attribute.image')}}</label>
-                                        <br>
-                                        {!! single_image('image_'.$language->code , media_file(old('image_'.$language->code, $attribute->getTranslation('image', $language->code))) , old('image_'.$language->code, $attribute->getTranslation('image', $language->code))  ) !!}
-                                        <br>
-                                        @error('image_'.$language->code)<b class="text-danger"> <i
-                                                    class="las la-exclamation-triangle"></i> {{$message}}</b>@enderror
-                                    </div>
-
-                                </div>
-
                             </div>
                         @endforeach
 

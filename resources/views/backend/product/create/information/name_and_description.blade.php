@@ -24,27 +24,6 @@
                                 <b id="error_title_{{$item->code}}" class="text-danger"></b>
                             </div>
                         </div>
-                        <div class="col-12 col-md-12">
-                            <div class="form-group">
-                                <label  for="short_title_{{$item->code}}"
-                                       class="form-label @if($key == 0 ) required @endif">{{trans('backend.product.short_title')}}</label>
-                                <input type="text" class="form-control has-error" name="short_title_{{$item->code}}"
-                                       value="{{old('short_title_'.$item->code)}}"
-                                       id="short_title_{{$item->code}}" maxlength="70">
-                                <b id="error_short_title_{{$item->code}}" class="text-danger"></b>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-12">
-                            <div class="form-group">
-                                <label class="form-label"  for="summary_name_{{$item->code}}"
-                                       class="form-label  ">{{trans('backend.product.summary_name')}}</label>
-                                <textarea type="text" class="form-control" name="summary_name_{{$item->code}}"
-                                          id="summary_name_{{$item->code}}">{{old('summary_name_'.$item->code)}}</textarea>
-                                <b id="error_summary_name_{{$item->code}}" class="text-danger"></b>
-
-                            </div>
-                        </div>
-
                         <div class="col-12 col-md-12 form-group ">
                             <div class="form-group">
                                 <label class="form-label  @if($key == 0 ) required @endif"
@@ -57,17 +36,6 @@
                                         class="las la-exclamation-triangle"></i> {{$message}} @enderror</b>
                             </div>
                         </div>
-                        <div class="col-12 col-md-12">
-                            <div class="form-group">
-                                <label class="form-label"  for="faq_{{$item->code}}"
-                                       class="form-label  ">{{trans('backend.product.faq')}}</label>
-                                <textarea type="text" class="form-control" name="faq_{{$item->code}}"
-                                          id="faq_{{$item->code}}">{{old('faq_'.$item->code)}}</textarea>
-                                <b id="error_faq_{{$item->code}}" class="text-danger"></b>
-
-                            </div>
-                        </div>
-                        {!! form_seo($item->code , $key ,old('meta_title_'.$item->code),old('meta_description_'.$item->code)) !!}
                     </div>
 
                 </div>
