@@ -210,3 +210,9 @@ Route::group(['prefix' => 'search'], function () {
     Route::any('filter', [\App\Http\Controllers\Api\Frontend\SearchController::class, 'filter']);
 });
 #endregion
+
+
+// new 
+
+Route::get('/categories', [\App\Http\Controllers\Api\Frontend\CategoryController::class, 'index']);
+Route::get('/all-products',[\App\Http\Controllers\Api\Frontend\CategoryController::class, 'all_products']);
