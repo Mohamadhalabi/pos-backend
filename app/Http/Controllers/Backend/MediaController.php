@@ -44,32 +44,32 @@ class MediaController extends Controller
     function upload_files(UploadFileRequest $request)
     {
         $path = \request('storage_path');
-        $width = $request->has('width') ? $request->width : 600;
-        $height = $request->has('height') ? $request->height : 600;
+        $width = $request->has('width') ? $request->width : 500;
+        $height = $request->has('height') ? $request->height : 500;
         $extension = $request->file('file')->extension();
         if (in_array($extension, $this->imageExtensions)) {
             $watermark = ($request->watermark == 'true' && get_setting('watermark_status') == 1);
             $original_size = $this->StoreImage('file', $width, $height, $path, $watermark);
-            $medium_size = $this->StoreImage('file', intval($width / 2), intval($height / 2), '/medium/' . ($path == '/' ? "" : $path), $watermark);
-            $thumbnail = $this->StoreImage('file', intval($width / 3), intval($height / 3), '/thumbnail/' . ($path == '/' ? "" : $path), $watermark);
-            $ids = json_encode(['original_id' => $original_size->id, 'medium_id' => $medium_size->id, 'thumbnail_id' => $thumbnail->id]);
+            // $medium_size = $this->StoreImage('file', intval($width / 2), intval($height / 2), '/medium/' . ($path == '/' ? "" : $path), $watermark);
+            // $thumbnail = $this->StoreImage('file', intval($width / 3), intval($height / 3), '/thumbnail/' . ($path == '/' ? "" : $path), $watermark);
+            $ids = json_encode(['original_id' => $original_size->id]);
             $original_size->related_images_ids = $ids;
-            $medium_size->related_images_ids = $ids;
-            $thumbnail->related_images_ids = $ids;
+            // $medium_size->related_images_ids = $ids;
+            // $thumbnail->related_images_ids = $ids;
             $original_size->save();
-            $medium_size->save();
-            $thumbnail->save();
+            // $medium_size->save();
+            // $thumbnail->save();
             if ($watermark) {
                 $original_size_without_watermark = $this->StoreImage('file', $width, $height, $path, false);
-                $medium_size_without_watermark = $this->StoreImage('file', 300, 300, '/medium/' . ($path == '/' ? "" : $path), false);
-                $thumbnail_without_watermark = $this->StoreImage('file', 200, 200, '/thumbnail/' . ($path == '/' ? "" : $path), false);
-                $ids = json_encode(['original_id' => $original_size->id, 'medium_id' => $medium_size->id, 'thumbnail_id' => $thumbnail->id]);
+                // $medium_size_without_watermark = $this->StoreImage('file', 300, 300, '/medium/' . ($path == '/' ? "" : $path), false);
+                // $thumbnail_without_watermark = $this->StoreImage('file', 200, 200, '/thumbnail/' . ($path == '/' ? "" : $path), false);
+                $ids = json_encode(['original_id' => $original_size->id]);
                 $original_size_without_watermark->related_images_ids = $ids;
-                $medium_size_without_watermark->related_images_ids = $ids;
-                $thumbnail_without_watermark->related_images_ids = $ids;
+                // $medium_size_without_watermark->related_images_ids = $ids;
+                // $thumbnail_without_watermark->related_images_ids = $ids;
                 $original_size_without_watermark->save();
-                $medium_size_without_watermark->save();
-                $thumbnail_without_watermark->save();
+                // $medium_size_without_watermark->save();
+                // $thumbnail_without_watermark->save();
             }
 
         } else {

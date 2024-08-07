@@ -2,7 +2,7 @@
     <div class="card card-flush py-4 mt-3">
         <div class="card-header">
             <div class="card-title">
-                <h2><label for="image" class="required">{{trans('backend.product.image')}}</label></h2>
+                <h2><label for="image" class="required">{{trans('backend.product.image')}} 500x500</label></h2>
             </div>
         </div>
         <div class="card-body text-center pt-0">

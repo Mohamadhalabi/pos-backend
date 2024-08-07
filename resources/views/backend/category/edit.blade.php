@@ -44,7 +44,7 @@
                         </div>
                     @endforeach
                     <div class="col form-group ">
-                        <label class="form-label" for="icon">{{trans('backend.category.form_icon')}}</label>
+                        <label class="form-label" for="icon">150x150</label>
                         <br>
                         {!! single_image('icon' , media_file(old('icon', $category->icon)) , old('icon', $category->icon)  ) !!}
                         <br>

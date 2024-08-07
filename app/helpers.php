@@ -69,8 +69,14 @@ if (!function_exists('single_image')) {
         if (get_setting('watermark_status') != 1) {
             $water_mark = 'false';
         }
-        $height = 100;
-        $width = 100;
+        if($name =="image"){
+            $height =500;
+            $width =500;
+        }
+        else{
+            $height = 150;
+            $width = 150;
+        }
         if (isset($option['height']) && !empty($option['height'])) {
             $height = $option['height'];
         }

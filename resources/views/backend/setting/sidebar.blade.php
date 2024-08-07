@@ -31,28 +31,6 @@
                 </div>
             @endif
 
-            @if(permission_can('setting global_seo' ,'admin'))
-                <div class="menu-item @if(request()->routeIs('backend.setting.global')   ) show @endif">
-
-                    <a class="menu-link" href="{{route('backend.setting.global')}}">
-												<span class="menu-bullet">
-													<span class="bullet bullet-dot"></span>
-												</span>
-                        <span class="menu-title">{{trans('backend.setting.global_seo')}}</span>
-                    </a>
-                </div>
-            @endif
-            @if(permission_can('setting payment' ,'admin'))
-                <div class="menu-item @if(request()->routeIs('backend.setting.payment')   ) show @endif">
-
-                    <a class="menu-link" href="{{route('backend.setting.payment')}}">
-												<span class="menu-bullet">
-													<span class="bullet bullet-dot"></span>
-												</span>
-                        <span class="menu-title">{{trans('backend.setting.payment')}}</span>
-                    </a>
-                </div>
-            @endif
 {{--            @if(permission_can('setting default_images' ,'admin'))--}}
 {{--                <div class="menu-item @if(request()->routeIs('backend.setting.default_images')   ) show @endif">--}}
 
@@ -82,17 +60,6 @@
 
         </div>
         @endif
-        @if(permission_can('setting notifications', 'admin'))
-            <div class="menu-sub menu-sub-accordion  ">
-                <div class="menu-item @if(request()->routeIs('backend.setting.notifications')   ) show @endif">
-                    <a class="menu-link" href="{{route('backend.setting.notifications')}}">
-												<span class="menu-bullet">
-													<span class="bullet bullet-dot"></span>
-												</span>
-                        <span class="menu-title">{{trans('backend.setting.notifications')}}</span>
-                    </a>
-                </div>
-            </div>
-        @endif
+
     </div>
 @endif

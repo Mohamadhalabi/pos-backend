@@ -24,6 +24,6 @@ class IsSeller
         if (auth('seller')->check()){
             auth('seller')->logout();
         }
-        return  redirect()->route('seller.login');
+        return  redirect()->route('backend.login');
     }
 }

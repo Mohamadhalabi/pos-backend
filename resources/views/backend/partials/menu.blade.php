@@ -12,30 +12,22 @@
             </div>
             @include('backend.category.sidebar')
             @include('backend.attribute.sidebar')
-            @include('backend.media.sidebar')
-            @include('backend.manufacturer.sidebar')
             @include('backend.product.sidebar')
-            @include('backend.coupon.sidebar')
-            @include('backend.currency.sidebar')
-            <div class="menu-item">
+            <!-- Coupon will be Added  -->
+            <!-- <div class="menu-item">
                 <h4 class="menu-content text-muted mb-0 fs-7 text-uppercase">{{trans('backend.menu.orders')}}</h4>
-            </div>
-            @include('backend.order.sidebar')
-            @include('backend.offer.sidebar')
+            </div> -->
+            <!-- order will be added  -->
+             <!-- offer will be added  -->
             <div class="menu-item">
                 <h4 class="menu-content text-muted mb-0 fs-7 text-uppercase">General</h4>
             </div>
-            @include('backend.cms.sidebar')
             @include('backend.setting.sidebar')
             @include('backend.language.sidebar')
-            @include('backend.statistics.sidebar')
             <div class="menu-item">
                 <h4 class="menu-content text-muted mb-0 fs-7 text-uppercase">{{trans('backend.menu.users')}}</h4>
             </div>
             @include('backend.user.sidebar')
-            @include('backend.management.sidebar')
-
-
         </div>
     </div>
 </div>
