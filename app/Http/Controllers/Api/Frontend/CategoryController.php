@@ -19,6 +19,7 @@ class CategoryController extends Controller
                 'name' => $category->name,
                 'slug' => $category->slug,
                 'icon' => media_file($category->icon),
+                'products_count' => Product::where('status',1)->whereNull('deleted_at')->where('category_id',$category->id)->count(),
             ];
         }
         return response()->api_data($categories_data);
@@ -47,6 +48,7 @@ class CategoryController extends Controller
     
             $products_data[] = [
                 'id' => $product->id,
+                'sku' => $product->sku,
                 'name' => $product->title,
                 'category' => $category->name,
                 'price' => $product->price,
@@ -87,6 +89,7 @@ class CategoryController extends Controller
     
             $products_data[] = [
                 'id' => $product->id,
+                'sku' => $product->sku,
                 'name' => $product->title,
                 'category' => $category->name,
                 'price' => $product->price,
