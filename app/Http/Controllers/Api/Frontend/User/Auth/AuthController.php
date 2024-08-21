@@ -27,90 +27,52 @@ class AuthController extends Controller
 {
     use SetMailConfigurations;
 
-    public function login(LoginRequest $request)
+    public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-        $credentials['status'] = 1;
-
-        try {
-            $token = auth('api')->attempt($credentials);
-        } catch (\Exception $exception) {
-            return $exception->getMessage();
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
+    
+        if (!auth()->attempt($request->only('email', 'password'))) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
         }
-        if (!$token) {
-            return response()->error(trans('frontend.auth.credentials_not_matched'));
-        }
-        $user = auth('api')->id();
-//        $user2 = auth('api')->user();
-        $user = User::find($user);
-        if (empty($user->email_verified_at)) {
-            return response()->error(trans('frontend.auth.please_verify_your_mail'));
-        }
-        $user->auth_token = $token;
-        $user->save();
-        $user->avatar = $user->provider_type == 'email' ? asset($user->avatar) : $user->avatar;
-        $user = auth('api')->user();
-        $seller = $user->seller()->first();
-        $data = [
-            'status' => 'success',
-            'message' => trans('frontend.auth.success_login'),
+    
+        $user = auth()->user();
+        $token = $user->createToken('auth_token')->plainTextToken;
+    
+        // Include user information in the response
+        return response()->json([
+            'token' => $token,
             'user' => [
-                "id" => $user->id,
-                "uuid" => $user->uuid,
-                "country_id" => $user->country_id,
-                "city" => $user->city,
-                "name" => $user->name,
-                "provider_type" => $user->provider_type,
-                "email" => $user->email,
-                "avatar" => $user->provider_type == 'email' ? asset($user->avatar) : $user->avatar,
-                "address" => $user->address,
-                "state" => $user->state,
-                "street" => $user->street,
-                "company_name" => $user->company_name,
-                "website_url" => $user->website_url,
-                "type_of_business" => $user->type_of_business,
-                "postal_code" => $user->postal_code,
-                "balance" => $user->balance,
-                "referral_code" => $user->referral_code,
-                "status" => $user->status,
-
-            ],
-            'authorisation' => [
-                'token' => $token,
-                'type' => 'bearer',
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->phone, // Ensure phone exists in the User model
+                'address' => $user->address,
             ]
-        ];
-        if (!empty($seller)) {
-            $seller->avatar = asset($seller->avatar);
-            $data['user']['seller'] = $seller;
-        }
-        return response()->json($data);
-    }
+        ]);
+    }    
 
-    public function register(RegisterRequest $request)
+    public function register(Request $request)
     {
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->provider_type = 'email';
-        $user->password = \Hash::make($request->password);
-        $user->address = $request->address;
-        $user->state = $request->state;
-        $user->street = $request->street;
-        $user->country_id = $request->country;
-        $user->company_name = $request->company_name;
-        $user->website_url = $request->website_url;
-        $user->postal_code = $request->postal_code;
-        $user->save();
-//        $user =$user->first();
-        //auth after register
-//        $token = \auth('api')->login($user);
-//        $user->auth_token = $token;
-//        $user->save();
-        //send email verified
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:4',
+            'address' => 'required|string|min:5',
+            'phone' => 'required',
+        ]);
 
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'address' => $request->address,
+            'phone' => $request->phone,
+        ]);
 
-        return response()->data(['user' => $user, 'register' => 'success', 'token' => null, 'message' => trans('frontend.auth.registered_successfully')]);
+        return response()->json(['message' => 'User registered successfully'], 201);
     }
 
     public function forgot_password(ForgetPasswordRequest $request)
@@ -148,19 +110,10 @@ class AuthController extends Controller
     }
 
 
-    public function logout()
+    public function logout(Request $request)
     {
-        $user = auth('api')->user();
-        $user->auth_token = null;
-        $user->save();
-        $token = JWTAuth::getToken();
-
-        JWTAuth::clearResolvedInstance($token->get());
-        auth('api')->logout();
-        auth('api')->invalidate(true);
-        Auth::guard('api')->logout();
-        $forever = true;
-        return response()->data(['message' => trans('frontend.auth.logout_successfully')]);
+        auth()->user()->tokens()->delete();
+        return response()->json(['message' => 'Logged out successfully']);
     }
 
     public function login_with_facebook(FacebookLoginRequest $request)

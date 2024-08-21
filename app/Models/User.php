@@ -28,6 +28,7 @@ use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Models\Role;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -39,6 +40,7 @@ class User extends Authenticatable implements JWTSubject
     use MediaUploadingTrait;
     use LogsActivity;
     use SetMailConfigurations;
+    use HasApiTokens;
 
     public static $searchable = [
         'name',
@@ -79,6 +81,8 @@ class User extends Authenticatable implements JWTSubject
         'two_factor_expires_at',
         'stripe_cust_id',
         'facebook_id',
+        'address',
+        'phone',
         'google_id'
 
     ];
@@ -92,46 +96,6 @@ class User extends Authenticatable implements JWTSubject
             $uuid = 'TLKC' . (2200501 + ($lastUserId ?->id));
             $model->uuid = $uuid;
             $model->verification_code =  Str::random(40);
-        });
-        self::created(function ($model) {
-            $model->setMailConfigurations();
-//        dd(\Config::get('mail'));
-            $model->sendEmailVerificationNotification();
-            $data = [
-                'title' => trans('backend.notifications.welcome'),
-                'content' => trans('backend.notifications.message'),
-                'user' => $model,
-                'button' => trans('backend.notifications.visit_website')
-            ];
-            Mail::to($model)->queue(new WelcomeMail(trans('backend.notifications.welcome'), $data));
-
-            try {
-                if (!empty($model->email) && !empty(get_setting('token_sender_email'))) {
-                    $client = new \GuzzleHttp\Client();
-                    $json = [
-                        "email" => $model->email,
-                        "firstname" => $model->name,
-                        "phone" => $model->phone,
-                        "groups" => ["API"],
-                    ];
-
-
-                    $response = $client->post(
-                        'https://api.sender.net/v2/subscribers',
-                        [
-                            'headers' => [
-                                'Authorization' => 'Bearer ' . get_setting('token_sender_email'),
-                                'Content-Type' => 'application/json',
-                                'Accept' => 'application/json',
-                            ],
-                            'json' => $json
-                        ]
-                    );
-                    $body = $response->getBody();
-                }
-            } catch (\Exception $exception) {
-
-            }
         });
     }
 

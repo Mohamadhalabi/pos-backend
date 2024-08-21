@@ -217,3 +217,7 @@ Route::group(['prefix' => 'search'], function () {
 Route::get('/categories', [\App\Http\Controllers\Api\Frontend\CategoryController::class, 'index']);
 Route::get('/all-products',[\App\Http\Controllers\Api\Frontend\CategoryController::class, 'all_products']);
 Route::get('/category-products',[\App\Http\Controllers\Api\Frontend\CategoryController::class, 'products_by_category'])->name('category.products');
+
+Route::post('/register', [\App\Http\Controllers\Api\Frontend\User\Auth\AuthController::class, 'register']);
+Route::post('/login', [\App\Http\Controllers\Api\Frontend\User\Auth\AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->post('/logout', [\App\Http\Controllers\Api\Frontend\User\Auth\AuthController::class, 'logout']);
