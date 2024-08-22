@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 Use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductsAttribute;
+use App\Models\Attribute;
+use App\Models\SubAttribute;
 
 class CategoryController extends Controller
 {
@@ -42,9 +45,37 @@ class CategoryController extends Controller
         $products = $query->paginate(12); // Adjust the number per page as needed
     
         $products_data = [];
+
+        $products_attribute = [];
+
+        $attribute_data = [];
     
         foreach ($products as $product) {
+            
+            if(json_decode($product->gallery,true) == [])
+            $gallery = [media_file($product->image)];
+            
+            
+            foreach (json_decode($product->gallery, true) ?? [] as $image)
+            {
+                $gallery[] = media_file($image);
+            }
+            
             $category = Category::where('id', $product->category_id)->first();
+
+
+            $products_attribute = ProductsAttribute::where('product_id',$product->id)->pluck('sub_attribute_id')->toArray();
+            
+            $sub_attributes = SubAttribute::whereIn('id',$products_attribute)->get();
+
+            foreach($sub_attributes as $sub_attribute)
+            {
+                $attrib = Attribute::where('id',$sub_attribute->attribute_id)->first();
+                $attribute_data [] = [
+                    'sub_attribute' => $sub_attribute->value,
+                    'attribute' => $attrib->name,
+                ];
+            }
     
             $products_data[] = [
                 'id' => $product->id,
@@ -54,6 +85,8 @@ class CategoryController extends Controller
                 'price' => $product->price,
                 'sale_price' => $product->sale_price,
                 'image' => media_file($product->image),
+                'gallery' => $gallery,
+                'attributes' => $attribute_data,
             ];
         }
     
@@ -86,6 +119,31 @@ class CategoryController extends Controller
     
         foreach ($products as $product) {
             $category = Category::where('id', $product->category_id)->first();
+
+            if(json_decode($product->gallery,true) == [])
+            $gallery = [media_file($product->image)];
+            
+            
+            foreach (json_decode($product->gallery, true) ?? [] as $image)
+            {
+                $gallery[] = media_file($image);
+            }
+            
+            $category = Category::where('id', $product->category_id)->first();
+
+
+            $products_attribute = ProductsAttribute::where('product_id',$product->id)->pluck('sub_attribute_id')->toArray();
+            
+            $sub_attributes = SubAttribute::whereIn('id',$products_attribute)->get();
+
+            foreach($sub_attributes as $sub_attribute)
+            {
+                $attrib = Attribute::where('id',$sub_attribute->attribute_id)->first();
+                $attribute_data [] = [
+                    'sub_attribute' => $sub_attribute->value,
+                    'attribute' => $attrib->name,
+                ];
+            }
     
             $products_data[] = [
                 'id' => $product->id,
@@ -95,6 +153,8 @@ class CategoryController extends Controller
                 'price' => $product->price,
                 'sale_price' => $product->sale_price,
                 'image' => media_file($product->image),
+                'gallery' => $gallery,
+                'attributes' => $attribute_data,
             ];
         }
     
