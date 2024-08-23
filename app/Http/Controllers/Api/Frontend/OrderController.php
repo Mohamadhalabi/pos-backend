@@ -42,6 +42,7 @@ use App\Traits\StripeTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use stdClass;
 use function Symfony\Component\HttpFoundation\Session\Storage\Handler\read;
@@ -642,15 +643,77 @@ class OrderController extends Controller
     }
     function create_order(Request $request)
     {
-
-        dd($request);
-        // Get the cart data from the request
-        $cartData = $request->get('data'); // or use $request->json('data') if you expect JSON data
+        $order = new Order();
+    
+        // Generate a random UUID (6 characters long)
+        $order->uuid = Str::random(6);
+    
+        // Set customer details
+        $order->user_id = $request->customer['userId'];
+        $order->address = $request->customer['address'];
+        $order->phone = $request->customer['phone'];
+        $order->note = $request->customer['name'];
+        $order->status = "processing";
+    
+        $products = $request->items;
+        $total = 0;
+        $orderDetails = "Order UUID: " . $order->uuid . "\n";
+    
+        foreach ($products as $product) {
+            // Assuming $product is an array
+            $prod = Product::where('sku', $product['code'])->first();
+        
+            if ($prod) {
+                $total += $prod->price * $product['quantity'];
+                $orderDetails .= "Product: " . $prod->title . ", Quantity: " . $product['quantity'] . "\n";
+            } else {
+                // Handle case where product is not found
+                // Maybe log an error or throw an exception
+            }
+        }
+        
+        $order->total = $total;
+    
+        // Save the order
+        $order->save();
+    
+        // Add records to OrdersProducts model
+        foreach ($products as $product) {
+            $prod = Product::where('sku', $product['code'])->first();
+            
+            if ($prod) {
+                $orderProduct = new OrdersProducts();
+                $orderProduct->order_id = $order->id;
+                $orderProduct->product_id = $prod->id;
+                $orderProduct->quantity = $product['quantity'];
+                $orderProduct->price = $prod->price; // Assuming price is fetched from the product
+                
+                $orderProduct->save();
+            }
+        }
+    
+        // Prepare WhatsApp link
+        $contactNumber = get_setting('contact_whatsapp'); // Retrieve the contact number
+        $customerName = $request->customer['name'];
+        $customerAddress = $request->customer['address'];
+        $customerPhone = $request->customer['phone'];
+    
+        // Construct the message
+        $message = "Hello, my name is $customerName.\n" .
+                   "Here are my order details:\n" .
+                   $orderDetails .
+                   "Shipping Address: $customerAddress\n" .
+                   "Phone: $customerPhone\n" .
+                   "Total: TL $total";
+    
+        // URL encode the message
+        $encodedMessage = urlencode($message);
+        
+        // Create WhatsApp link
+        $whatsappLink = "https://wa.me/$contactNumber?text=$encodedMessage";
     
         return response()->json([
-            'message' => 'Order created successfully',
-            'data' => $cartData // Return the received cart data
-        ], 200);
+            'whatsapp_link' => $whatsappLink,
+        ]);
     }
-
 }

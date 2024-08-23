@@ -9,9 +9,6 @@
         <div class="card   flex-row-fluid mb-2  ">
             <div class="card-header">
                 <h3 class="card-title"> {{trans('backend.menu.users')}}</h3>
-                <div class="card-toolbar">
-                    {!! @$create_button !!}
-                </div>
             </div>
             <!--begin::Card Body-->
             <div class="card-body fs-6 py-15 px-10 py-lg-15 px-lg-15 text-gray-700">
@@ -25,14 +22,8 @@
                             <th>{{trans('backend.global.uuid')}}</th>
                             <th>{{trans('backend.user.phone')}}</th>
                             <th>{{trans('backend.user.email')}}</th>
-{{--                            <th>{{trans('backend.user.orders_count')}}</th>--}}
-{{--                            <th>{{trans('backend.user.purchase_value')}}</th>--}}
-{{--                            <th>{{trans('backend.user.avg_purchase_value')}}</th>--}}
-                            <th>{{trans('backend.user.balance')}}</th>
                             <th>{{trans('backend.global.created_at')}}</th>
                             <th>{{trans('backend.global.updated_at')}} </th>
-                            <th>{{trans('backend.global.status')}}</th>
-                            <th>{{trans('backend.global.actions')}}</th>
                         </tr>
                         </thead>
                         <tbody>

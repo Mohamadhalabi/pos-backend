@@ -31,6 +31,19 @@
                 </div>
             @endif
 
+
+            @if(permission_can('setting contact' ,'admin'))
+                <div class="menu-item @if(request()->routeIs('backend.setting.contact')   ) show @endif">
+
+                    <a class="menu-link" href="{{route('backend.setting.contact')}}">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+                        <span class="menu-title">Whatsapp number</span>
+                    </a>
+                </div>
+            @endif
+
 {{--            @if(permission_can('setting default_images' ,'admin'))--}}
 {{--                <div class="menu-item @if(request()->routeIs('backend.setting.default_images')   ) show @endif">--}}
 
@@ -44,6 +57,8 @@
 {{--            @endif--}}
 
         </div>
+
+        
         @if(permission_can('setting translate' ,'admin'))
         <div class="menu-sub menu-sub-accordion  ">
 

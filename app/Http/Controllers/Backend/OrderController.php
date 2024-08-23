@@ -70,18 +70,9 @@ class OrderController extends Controller
         $datatable_columns['id'] = 'id';
         $datatable_columns['uuid'] = 'uuid';
         $datatable_columns['user'] = 'users.name ';
-        $datatable_columns['seller'] = 'sellers.name';
-        $datatable_columns['shipping_method'] = 'shipping_method';
-//        $datatable_columns['payment_method'] = 'payment_method';
-        $datatable_columns['payment_status'] = 'payment_status';
         $datatable_columns['total'] = 'total';
-        $datatable_columns['balance'] = 'balance';
-        $datatable_columns['status'] = 'status';
-        $datatable_columns['coupon'] = 'coupon_value';
-        $datatable_columns['type'] = 'type';
-        $datatable_columns['tracking_number'] = 'tracking_number';
         $datatable_columns['created_at'] = 'created_at';
-        $datatable_columns['actions'] = 'actions';
+        
         #endregion
         $users_id = Order::query()->whereNotIn('status' ,[Order::$canceled])->pluck('user_id');
         $users = User::whereIn('id', $users_id)->whereNull('deleted_at')->get();
@@ -111,18 +102,7 @@ class OrderController extends Controller
             return abort(403);
         }
 
-        $model = Order::query()
-            ->select(['orders.*', 'currencies.symbol', \DB::raw('sellers.name as seller'), \DB::raw('sum(user_wallet.amount) as balance'), \DB::raw('users.name as user'), \DB::raw('users.email as email')])
-            ->leftJoin('user_wallet', 'user_wallet.order_id', 'orders.id')
-            ->leftjoin('users', 'orders.user_id', 'users.id')
-            ->leftjoin('sellers', 'sellers.id', 'orders.seller_id')
-            ->leftjoin('currencies', 'currencies.id', 'orders.currency_id')
-            ->whereNotIn('orders.status', [Order::$canceled, Order::$waiting])
-            ->where(function ($q) {
-                $q->where('user_wallet.status', UserWallet::$approve)->orWhereNull('user_wallet.status');
-            })
-            ->groupBy('orders.id')
-            ->whereNull('orders.deleted_at');
+        $model = Order::query();
 
 //            ->whereNull('users.deleted_at');
 
@@ -230,7 +210,7 @@ class OrderController extends Controller
             })
             ->editColumn('total', function ($q) {
 
-                return '<span class="badge badge-light-info badge-lg fw-bold small ">' . currency($q->total) . (!empty($q->currency_id) && $q->currency_id != 1 ? ' / ' . ($q->total * $q->exchange_rate) . ' ' . $q->symbol : '') . '</span>';
+                return '<span class="badge badge-light-info badge-lg fw-bold small ">' . $q->total . ' TL '. '</span>';
             })
             ->editColumn('shipping', function ($q) {
                 return '<span class="badge badge-light-primary badge-lg fw-bold  small ">' . currency($q->shipping) . (!empty($q->currency_id) && $q->currency_id != 1 ? ' / ' . ($q->shipping * $q->exchange_rate) . ' ' . $q->symbol : '') . '</span>';

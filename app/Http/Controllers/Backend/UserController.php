@@ -77,11 +77,8 @@ class UserController extends Controller
         $datatable_columns['uuid'] = 'uuid';
         $datatable_columns['phone'] = 'phone';
         $datatable_columns['email'] = 'email';
-        $datatable_columns['user_balance'] = 'user_balance';
         $datatable_columns['created_at'] = 'created_at';
         $datatable_columns['updated_at'] = 'updated_at';
-        $datatable_columns['status'] = 'status';
-        $datatable_columns['actions'] = 'actions';
         #endregion
 
         $sellers_ids = User::pluck('seller_id');

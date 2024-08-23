@@ -24,13 +24,7 @@ class ContactRequest extends FormRequest
     public function rules()
     {
         return [
-            'contact_email' => 'required',
-            'contact_email_secondary' => '',
-            'contact_telegram' => 'required',
             'contact_whatsapp' => 'required',
-            'contact_phone' => 'required',
-            'contact_phone_secondary' => '',
-            'contact_address' => '',
         ];
     }
 }

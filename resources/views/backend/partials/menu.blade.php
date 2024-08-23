@@ -22,6 +22,8 @@
             <div class="menu-item">
                 <h4 class="menu-content text-muted mb-0 fs-7 text-uppercase">General</h4>
             </div>
+            @include('backend.order.sidebar')
+
             @include('backend.setting.sidebar')
             @include('backend.language.sidebar')
             <div class="menu-item">
