@@ -221,3 +221,5 @@ Route::get('/category-products',[\App\Http\Controllers\Api\Frontend\CategoryCont
 Route::post('/register', [\App\Http\Controllers\Api\Frontend\User\Auth\AuthController::class, 'register']);
 Route::post('/login', [\App\Http\Controllers\Api\Frontend\User\Auth\AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [\App\Http\Controllers\Api\Frontend\User\Auth\AuthController::class, 'logout']);
+
+Route::post('/create-order', [\App\Http\Controllers\Api\Frontend\OrderController::class, 'create_order'])->name('create_order');

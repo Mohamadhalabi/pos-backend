@@ -640,5 +640,17 @@ class OrderController extends Controller
         $this->PrintInvoicePDF($order->id);
 
     }
+    function create_order(Request $request)
+    {
+
+        dd($request);
+        // Get the cart data from the request
+        $cartData = $request->get('data'); // or use $request->json('data') if you expect JSON data
+    
+        return response()->json([
+            'message' => 'Order created successfully',
+            'data' => $cartData // Return the received cart data
+        ], 200);
+    }
 
 }
