@@ -41,7 +41,7 @@ class SettingController extends Controller
 
         $value = json_decode($website_settings->value,true);
 
-        $system_name = $value[$acceptLanguage] ?? $value['en']; // Fallback to 'en' if the locale is not present
+        $system_name = $value; // Fallback to 'en' if the locale is not present
 
 
 

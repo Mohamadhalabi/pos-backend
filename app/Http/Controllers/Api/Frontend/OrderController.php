@@ -643,6 +643,7 @@ class OrderController extends Controller
     }
     function create_order(Request $request)
     {
+
         $order = new Order();
     
         // Generate a random UUID (6 characters long)
@@ -709,12 +710,24 @@ class OrderController extends Controller
         $customerPhone = $request->customer['phone'];
     
         // Construct the message
-        $message = "Hello, my name is $customerName.\n" .
-                   "Here are my order details:\n" .
-                   $orderDetails .
-                   "Shipping Address: $customerAddress\n" .
-                   "Phone: $customerPhone\n" .
-                   "Total: TL $total";
+        $acceptLanguage = $request->header('Accept-Language');
+        if ($acceptLanguage == "en") {
+            $message = "Hello, my name is $customerName.\n" .
+            "Here are my order details:\n" .
+            $orderDetails .
+            "Shipping Address: $customerAddress\n" .
+            "Phone: $customerPhone\n" .
+            "Total: TL $total";
+        }
+        else if ($acceptLanguage == "ar") {
+            $message = "مرحباً، اسمي $customerName.\n" .
+            "إليكم تفاصيل طلبي:\n" .
+            $orderDetails .
+            "عنوان الشحن: $customerAddress\n" .
+            "الهاتف: $customerPhone\n" .
+            "المجموع: TL $total";
+        }
+        
     
         // URL encode the message
         $encodedMessage = urlencode($message);
