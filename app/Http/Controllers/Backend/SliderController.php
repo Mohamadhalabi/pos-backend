@@ -105,11 +105,11 @@ class SliderController extends Controller
             $image [$language->code] = $request->has('image_' . $language->code) && !empty($request->get('image_' . $language->code)) ? $request->get('image_' . $language->code) : $request->get('image_' . get_languages()[0]->code);
             $link [$language->code] = $request->has('link_' . $language->code) && !empty($request->get('link_' . $language->code)) ? $request->get('link_' . $language->code) : $request->get('link_' . get_languages()[0]->code);
         }
+
         Slider::create([
             'image' => $image,
             'link' => $link,
-            'type' => $request->type,
-            'status'=> $request->status?1:0]);
+            'status'=> $request->status]);
 
         return redirect()->route('backend.cms.sliders.index')->with('success', trans('backend.global.success_message.created_successfully'));
     }
@@ -137,7 +137,6 @@ class SliderController extends Controller
         $slider->update([
             'image' => $image,
             'link' => $link,
-            'type' => $request->type,
             'status'=> $request->status?1:0]);
 
         return redirect()->route('backend.cms.sliders.index')->with('success', trans('backend.global.success_message.updated_successfully'));

@@ -11,7 +11,6 @@
     <div class="d-flex   row mb-3 mt-3  ">
         @include('orders.card.order_details')
         @include('orders.card.customer')
-        {{--        @include('orders.card.seller')--}}
         @if($address != null)
             @include('orders.card.address')
         @endif
@@ -19,12 +18,6 @@
 
     <div class="d-flex row mb-3">
         @include('orders.card.products')
-        @if(!empty($payment_files->files) )
-            <div class="col-lg-12  col-xl-12 col-md-12 col-12">
-                @include('orders.card.documents')
-
-            </div>
-        @endif
     </div>
 @endsection
 

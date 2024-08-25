@@ -26,6 +26,7 @@
 
             @include('backend.setting.sidebar')
             @include('backend.language.sidebar')
+            @include('backend.cms.sidebar')
             <div class="menu-item">
                 <h4 class="menu-content text-muted mb-0 fs-7 text-uppercase">{{trans('backend.menu.users')}}</h4>
             </div>

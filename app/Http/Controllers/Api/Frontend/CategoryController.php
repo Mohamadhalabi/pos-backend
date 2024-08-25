@@ -30,20 +30,29 @@ class CategoryController extends Controller
 
     public function all_products(Request $request)
     {
+        $search = $request->input('search');
+
         // Get the selected category from the request
         $selected_category = $request->input('selected_category', 'all');
     
         // Start the query for products
-        $query = Product::where('status', 1)->whereNull('deleted_at');
-    
+        $query = Product::join('categories', 'products.category_id', '=', 'categories.id')
+        ->where('products.status', 1)
+        ->where('categories.status', 1)
+        ->whereNull('products.deleted_at')
+        ->select('products.*'); // Adjust the selected fields as needed
+        
         // If the selected category is not 'all', filter by category
         if ($selected_category !== 'all') {
             $query->where('category_id', $selected_category);
         }
-    
+
+        if($search != ""){
+            $query->where('sku',$search);
+        }
         // Paginate the results
         $products = $query->paginate(12); // Adjust the number per page as needed
-    
+
         $products_data = [];
 
         $products_attribute = [];
@@ -87,6 +96,7 @@ class CategoryController extends Controller
                 'image' => media_file($product->image),
                 'gallery' => $gallery,
                 'attributes' => $attribute_data,
+                'description' => $product->description,
             ];
         }
     
@@ -155,6 +165,7 @@ class CategoryController extends Controller
                 'image' => media_file($product->image),
                 'gallery' => $gallery,
                 'attributes' => $attribute_data,
+                'description' => $product->description,
             ];
         }
     

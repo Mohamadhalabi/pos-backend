@@ -27,14 +27,14 @@ class EditSetting extends FormRequest
         foreach (get_languages() as $lang) {
             $rules['system_name_' . $lang->code] = 'required|min:3';
         }
-        $rules['app_url'] = 'required';
-        $rules['system_logo_white'] = 'required';
-        $rules['system_logo_black'] = 'required';
-        $rules['admin_background'] = 'required';
-        $rules['system_logo_icon'] = 'required';
-        $rules['merchant_app_name'] = 'required';
-        $rules['merchant_id'] = 'required';
-        $rules['client_credentials_path'] = 'required';
+        // $rules['app_url'] = 'required';
+        // $rules['system_logo_white'] = 'required';
+        // $rules['system_logo_black'] = 'required';
+        // $rules['admin_background'] = 'required';
+        // $rules['system_logo_icon'] = 'required';
+        // $rules['merchant_app_name'] = 'required';
+        // $rules['merchant_id'] = 'required';
+        // $rules['client_credentials_path'] = 'required';
         return $rules;
     }
 }

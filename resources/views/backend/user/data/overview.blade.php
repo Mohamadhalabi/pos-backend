@@ -77,45 +77,6 @@
                     </div>
                 </div>
                 <div class="row mb-6">
-                    <div class="col-12 col-sm-6  ">
-                        <div class="form-group ">
-
-                            <label
-                                class=" form-label fw-bold m-4    mx-auto">{{trans('backend.profile.avatar')}}</label>
-
-                            <div class=" mx-auto">
-                                <div
-                                    class="image-input image-input-outline @if($user->avatar==null) image-input-empty @endif"
-                                    data-kt-image-input="true"
-                                    style="background-image: url({{ asset('backend/media/avatars/blank.png')}})">
-                                    <div class="image-input-wrapper text-center z-index-3 w-125px h-125px p-5"
-                                         style="background-image:  url({{$user->avatar}})">
-                                    </div>
-                                    <label
-                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                        data-kt-image-input-action="change" data-bs-toggle="tooltip" title=""
-                                        data-bs-original-title="Change avatar">
-                                        <i class="bi bi-pencil-fill fs-7"></i>
-                                        <input type="file" name="avatar" value="{{old('avatar', $user->avatar)}}"
-                                               accept=".png, .jpg, .jpeg">
-                                        <input type="hidden" name="avatar_remove">
-                                    </label>
-                                    <span
-                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                        data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title=""
-                                        data-bs-original-title="Cancel avatar">
-																<i class="bi bi-x fs-2"></i>
-															</span>
-                                    <span
-                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                        data-kt-image-input-action="remove" data-bs-toggle="tooltip" title=""
-                                        data-bs-original-title="Remove avatar">
-																<i class="bi bi-x fs-2"></i>
-															</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="col-12 col-sm-6  align-items-center">
                         <div class="form-group  align-items-center">
                             <br>

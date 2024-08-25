@@ -344,9 +344,9 @@ Route::resource('orders', \App\Http\Controllers\Backend\OrderController::class)-
 Route::group(['prefix' => 'orders', 'as' => 'orders.'], function () {
     Route::post('update/{id}', [\App\Http\Controllers\Backend\OrderController::class, 'update'])->name('update');
     Route::get('{id}/print', [\App\Http\Controllers\Backend\OrderController::class, 'print_pdf'])->name('print');
-    Route::get('{id}/download', [\App\Http\Controllers\Backend\OrderController::class, 'download'])->name('download');
+    Route::get('{id}/completed', [\App\Http\Controllers\Backend\OrderController::class, 'completed'])->name('completed');
     Route::get('{id}/refund', [\App\Http\Controllers\Backend\OrderController::class, 'order_refund'])->name('refund');
-    Route::get('{uuid}/cancel', [\App\Http\Controllers\Backend\OrderController::class, 'cancel'])->name('cancel');
+    Route::get('{id}/cancel', [\App\Http\Controllers\Backend\OrderController::class, 'cancel'])->name('cancel');
     Route::post('datatable', [\App\Http\Controllers\Backend\OrderController::class, 'datatable'])->name('datatable');
     Route::post('{order}/change-status', [\App\Http\Controllers\Backend\OrderController::class, 'change_status'])->name('change.status');
     Route::post('{order}/make-order', [\App\Http\Controllers\Backend\OrderController::class, 'change_to_order'])->name('make-order');

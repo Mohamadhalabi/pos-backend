@@ -15,15 +15,6 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <ul class="nav nav-tabs nav-line-tabs mb-5 fs-6">
-                        @foreach(get_languages() as $key=> $language)
-                            <li class="nav-item">
-                                <a class="nav-link  @if($key == 0 ) active @endif" data-bs-toggle="tab"
-                                   href="#{{$language->code}}">{{$language->language}}</a>
-                            </li>
-                        @endforeach
-
-                    </ul>
                     <div class="tab-content" id="myTabContent">
                         @foreach(get_languages() as $key=> $language)
                             <div class="tab-pane fade   @if($key == 0 )show active @endif" id="{{$language->code}}"
@@ -44,9 +35,15 @@
                                 </div>
                                 <div class="row">
                                     <div class="col form-group ">
-                                        <label class="form-label" for="{{'image_'.$language->code}}">{{trans('backend.slider.image')}}</label>
+                                        <label class="form-label" for="">{{trans('backend.slider.image')}} 1800x454</label>
                                         <br>
-                                        {!! single_image('image_'.$language->code , media_file(old('image_'.$language->code, $slider->getTranslation('image', $language->code))) , old('image_'.$language->code, $slider->getTranslation('image', $language->code))  ) !!}
+                                        {!! single_image(
+                                                'image_'.$language->code,
+                                                media_file(old('image_'.$language->code, $slider->getTranslation('image', $language->code))),
+                                                old('image_'.$language->code, $slider->getTranslation('image', $language->code)),
+                                                'image',
+                                                ['width' => 1800, 'height' => 454, 'watermark' => 'no']
+                                            ) !!}
                                         <br>
                                         @error('image_'.$language->code)<b class="text-danger"> <i
                                                 class="las la-exclamation-triangle"></i> {{$message}}</b>@enderror
@@ -65,28 +62,6 @@
                     <div class="form-group row">
                         <div class="col  align-items-center">
                             <div class="form-group  align-items-center">
-                                <div class="form-group">
-                                    <label class="form-label"
-                                           for="type">{{trans('backend.slider.type')}}</label>
-                                    <select class="form-control type" id="type"
-                                            name="type" required
-                                            data-control="select2"
-                                            data-placeholder="Type">
-
-                                        <option {{old('type',$slider->type) == 'main'? "selected":"" }} data-width="800"
-                                                data-height="460"
-                                                value="main">{{trans('backend.slider.main')}}</option>
-                                        <option
-                                            {{old('type',$slider->type) == 'banner'? "selected":"" }} data-width="450"
-                                            data-height="650"
-                                            value="banner">{{trans('backend.slider.banner')}}</option>
-
-
-                                    </select>
-                                    @error('type') <b class="text-danger"><i
-                                            class="las la-exclamation-triangle"></i> {{$message}} </b> @enderror
-                                </div>
-                                <br>
                                 <div class="form-check form-switch form-check-custom form-check-solid me-10">
                                     <input class="form-check-input h-20px w-30px"
                                            @if(old('status',$slider->status) == 1) checked @endif type="checkbox"

@@ -15,17 +15,10 @@
                     <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200">
                         <th>{{trans('backend.global.id')}}</th>
                         <th>{{trans('backend.global.uuid')}}</th>
-                        <th>{{trans('backend.user.seller')}}</th>
-                        <th>{{trans('backend.order.payment_method')}}</th>
-                        <th>{{trans('backend.order.payment_status')}}</th>
                         <th>{{trans('backend.order.total')}}</th>
-                        <th>{{trans('backend.order.shipping')}}</th>
                         <th>{{trans('backend.global.status')}}</th>
-                        <th>{{trans('backend.order.coupon_value')}}</th>
                         <th>{{trans('backend.order.type')}}</th>
-                        <th>{{trans('backend.order.tracking_number')}}</th>
                         <th>{{trans('backend.global.created_at')}}</th>
-                        <th>{{trans('backend.global.actions')}}</th>
                     </tr>
                     </thead>
                     <tbody>

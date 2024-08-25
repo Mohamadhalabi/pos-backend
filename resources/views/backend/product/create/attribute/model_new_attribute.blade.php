@@ -37,17 +37,6 @@
                                  </div>
                              </div>
                          </div>
-                         <div class="row">
-                             <div class="col form-group ">
-                                 <label class="form-label" for="image">{{trans('backend.attribute.image')}}</label>
-                                 <br>
-                                 {!! single_image('img_new_attr_'.$language->code , media_file('-1')  ,'' ) !!}
-                                 <br>
-                                 <b id="message_error_new_attr_{{$language->code}}" class="text-danger">  </b>
-
-                             </div>
-
-                         </div>
 
                      </div>
                  @endforeach

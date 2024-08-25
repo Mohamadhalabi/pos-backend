@@ -31,6 +31,17 @@
                 </div>
             @endif
 
+            @if(permission_can('setting website' ,'admin'))
+                <div class="menu-item @if(request()->routeIs('backend.setting.index')   ) show @endif">
+                    <a class="menu-link" href="{{route('backend.setting.index')}}">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+                        <span class="menu-title">{{trans('backend.setting.website')}}</span>
+                    </a>
+                </div>
+            @endif
+
 
             @if(permission_can('setting contact' ,'admin'))
                 <div class="menu-item @if(request()->routeIs('backend.setting.contact')   ) show @endif">

@@ -20,12 +20,6 @@
                     <!--begin::Details-->
                     <div class="d-flex flex-wrap flex-sm-nowrap mb-3">
                         <!--begin: Pic-->
-                        <div class="me-7 mb-4">
-                            <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
-                                <img src="{{$user->avatar??asset('backend/media/avatars/blank.png')}}" alt="image">
-                            </div>
-                        </div>
-
                         <!--end::Pic-->
                         <!--begin::Info-->
                         <div class="flex-grow-1">
@@ -187,32 +181,9 @@
                         </li>
                         <!--end::Nav item-->
                         <!--begin::Nav item-->
-                        @if(permission_can('show user addresses', 'admin'))
-                            <li class="nav-item mt-2">
-                                <button class="nav-link text-active-primary ms-0 me-10 bg-white py-5 tab-btn"
-                                        id="addresses" data-route="{{route('backend.users.addresses', [$user->id])}}"
-                                >{{trans('backend.user.addresses')}}</button>
-                            </li>
-                        @endif
+
                     <!--end::Nav item-->
-                        <!--begin::Nav item-->
-                        @if(permission_can('show tickets', 'admin'))
 
-                            <li class="nav-item mt-2">
-                                <button class="nav-link text-active-primary ms-0 me-10 bg-white py-5 tab-btn"
-                                        id="tickets" data-route="{{route('backend.users.tickets', [$user->id])}}"
-                                >{{trans('backend.user.tickets')}}</button>
-                            </li>
-                        @endif
-                        @if(permission_can('show wallets', 'admin'))
-
-                            <li class="nav-item mt-2">
-                                <button class="nav-link text-active-primary ms-0 me-10 bg-white py-5 tab-btn"
-                                        id="wallet"
-                                        data-route="{{route('backend.users.wallet', [$user->id])}}"
-                                >{{trans('backend.user.wallet')}}</button>
-                            </li>
-                        @endif
                         @if(permission_can('show orders', 'admin'))
 
                             <li class="nav-item mt-2">

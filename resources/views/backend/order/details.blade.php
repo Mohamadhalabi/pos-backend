@@ -17,7 +17,7 @@
                         <thead>
                         <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 small">
                             <th class="small">{{trans('backend.global.uuid')}}</th>
-                            <!-- <th class="small">{{trans('backend.order.user')}}</th> -->
+                            <th class="small">{{trans('backend.order.user')}}</th>
                             <th class="small">{{trans('backend.order.total')}}</th>
                             <th class="small">{{trans('backend.global.status')}}</th>
                             <th class="small">Date</th>

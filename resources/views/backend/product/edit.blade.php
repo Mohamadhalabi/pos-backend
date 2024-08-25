@@ -35,27 +35,7 @@
 
     </div>
 
-    <ul class="nav nav-tabs nav-line-tabs nav-line-tabs-2x mb-5 fs-6">
-        <li class="nav-item">
-            <a class="nav-link active" data-bs-toggle="tab"
-               href="#product_information">{{trans('backend.product.information')}}</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab"
-               href="#competitors">{{trans('backend.product.competitors')}}</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab"
-               href="#product_google_merchant">{{trans('backend.product.google_merchant')}}</a>
-        </li>
-        @if(permission_can('show reviews' ,'admin'))
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab"
-                   href="#product_reviews">{{trans('backend.product.reviews')}}</a>
-            </li>
-        @endif
 
-    </ul>
     <div class="tab-content" id="myTabContent">
 
         <div class="tab-pane fade   show active" id="product_information" role="tabpanel">

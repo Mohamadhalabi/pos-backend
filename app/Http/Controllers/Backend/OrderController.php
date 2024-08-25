@@ -67,11 +67,12 @@ class OrderController extends Controller
         $datatable_route = route('backend.orders.datatable', ['status_filter' => request()->status_filter]);
         #region data table columns
         $datatable_columns = [];
-        $datatable_columns['id'] = 'id';
         $datatable_columns['uuid'] = 'uuid';
-        $datatable_columns['user'] = 'users.name ';
+        // $datatable_columns['user'] = 'users.name';
         $datatable_columns['total'] = 'total';
+        $datatable_columns['status'] = 'status';
         $datatable_columns['created_at'] = 'created_at';
+        $datatable_columns['actions'] = 'actions';
         
         #endregion
         $users_id = Order::query()->whereNotIn('status' ,[Order::$canceled])->pluck('user_id');
@@ -185,22 +186,6 @@ class OrderController extends Controller
                 if ($permission['show']) {
                     $actions .= $this->btn(route('backend.orders.show', ['order' => $q->id]), '', 'las la-eye', 'btn-warning btn-show btn-icon');
                 }
-
-                $actions .= ' <a href=' . route("backend.orders.download", $q->uuid) . ' type="button" class="btn btn-secondary text-xl  btn-hover-rise btn-icon btn-sm "> <i class="fonticon-printer fs-1x"></i></a> ';
-
-                if (!empty($q->email) && $permission['send']) {
-                    $actions .= ' <a type="button" href=' . route("backend.orders.send.pdf.user", $q->id) . ' class="btn btn-primary  btn-hover-rise text-xl btn-icon btn-sm " >  <i class="las la-paper-plane"></i>   </a> ';
-                }
-                if ($permission['edit'] && abs($q->balance) == abs($q->total) && !in_array($q->status, [Order::$completed, Order::$refunded, Order::$canceled]) && $q->type != Order::$pin_code) {
-                    $actions .= $this->edit_button(route('backend.orders.edit', $q->id));
-                }
-                if ($permission['refund'] && $q->type == Order::$order && in_array($q->status, [Order::$completed, Order::$processing])) {
-                    $actions .= ' <a  href="' . route('backend.orders.refund', $q->id) . '"  class="btn btn-light-danger btn-sm  btn-hover-rise" ><i class="las la-redo"></i> ' . trans('backend.order.refund') . '</a>';
-                }
-                if ($permission['change_status'] && (($q->type == Order::$order && in_array($q->status, [Order::$on_hold, Order::$pending_payment])) || ($q->type == Order::$proforma && $q->status != Order::$canceled))) {
-                    $actions .= ' <a  href="' . route('backend.orders.cancel', $q->uuid) . '"  class="btn btn-light-dark btn-sm  btn-hover-rise" ><i class="las la-times"></i> ' . trans('backend.order.cancel') . '</a>';
-                }
-
 
                 return $actions;
             })
@@ -440,7 +425,7 @@ class OrderController extends Controller
     #endregion
 
     #region download
-    public function download($id)
+    public function completed($id)
     {
 
         $order = Order::query()->where('uuid', $id)->first();
@@ -449,10 +434,11 @@ class OrderController extends Controller
         if (empty($order)) {
             return abort(404);
         }
-        $this->PrintInvoicePDF($order->id);
 
+        $order->status = "completed";
+        $order->save();
 
-        return;
+        return redirect()->back()->with('success', 'Order is completed');
     }
     #endregion
 
@@ -1192,34 +1178,15 @@ class OrderController extends Controller
     #endregion
 
     //region cancel
-    function cancel($uuid)
+    function cancel($id)
     {
-        $order = Order::query()->where('uuid', $uuid)->first();
-        if (empty($order)) {
-            return redirect()->back()->with('error', trans('api.order.order_not_found'));
-        }
-        ProductsSerialNumber::query()->where('order_id' , $order->id)->update([
-            'order_product_id'=>null,
-            'order_id'=>null,
-        ]);
+        $order = Order::query()->where('uuid', $id)->first();
+        
+        $order->status = "canceled";
 
-        if (in_array($order->status, [Order::$on_hold, Order::$pending_payment, Order::$proforma])) {
-            $this->refund_statements_order($order->id, $order, false);
-            $user_wallet_count = UserWallet::query()
-                ->where('order_id', $order->id)
-                ->whereNot('amount', 0)
-                ->where('type', UserWallet::$refund)->where('status', UserWallet::$approve)->count();
-            if ($user_wallet_count == 0) {
-                $order->status = Order::$canceled;
-            } else {
-                $order->status = Order::$refunded;
-            }
-            $order->save();
-            return redirect()->back()->with('success', trans('backend.global.success_message.updated_successfully'));
+        $order->save();
 
-        } else {
-            return redirect()->back()->with('error', trans('backend.order.cant_change_status'));
-        }
+        return redirect()->back()->with('success', 'Order is canceled');
 
     }
     //endregion

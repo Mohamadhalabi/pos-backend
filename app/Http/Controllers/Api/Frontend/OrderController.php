@@ -664,7 +664,12 @@ class OrderController extends Controller
             $prod = Product::where('sku', $product['code'])->first();
         
             if ($prod) {
-                $total += $prod->price * $product['quantity'];
+                if($prod->sale_price !=null){
+                    $total += $prod->sale_price * $product['quantity'];
+                }
+                else{
+                    $total += $prod->price * $product['quantity'];                   
+                }
                 $orderDetails .= "Product: " . $prod->title . ", Quantity: " . $product['quantity'] . "\n";
             } else {
                 // Handle case where product is not found
@@ -686,7 +691,12 @@ class OrderController extends Controller
                 $orderProduct->order_id = $order->id;
                 $orderProduct->product_id = $prod->id;
                 $orderProduct->quantity = $product['quantity'];
-                $orderProduct->price = $prod->price; // Assuming price is fetched from the product
+                if($prod->sale_price == null || $prod->sale_price == 0 || $prod->sale_price == 0.00){
+                    $orderProduct->price = $prod->price; // Assuming price is fetched from the product
+                }
+                else{
+                    $orderProduct->price = $prod->sale_price; // Assuming price is fetched from the product
+                }
                 
                 $orderProduct->save();
             }

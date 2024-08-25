@@ -105,16 +105,23 @@ trait ProductTrait
     }
 
 
-    function generate_sku_code($i = 1)
+    function generate_sku_code()
     {
-
-        $sku = "TL" . (Product::withTrashed()->max('id') + $i);
-        $check = Product::withTrashed()->where('sku', $sku)->count();
-        if ($check == 0) {
-            return $sku;
-        }
-        return $this->generate_sku_code($i + 1);
+        do {
+            // Generate a random number between 1000 and 9000
+            $randomNumber = rand(1000, 9000);
+            
+            // Create the SKU code
+            $sku = "BM" . $randomNumber;
+            
+            // Check if the SKU exists in the product model
+            $skuExists = Product::where('sku', $sku)->exists();
+            
+        } while ($skuExists); // Repeat if the SKU already exists
+        
+        return $sku;
     }
+    
 
     public function api_calculate_cart_coupon(Coupon $coupon, Currency $currency, $country = null)
     {

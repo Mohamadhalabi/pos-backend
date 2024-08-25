@@ -24,6 +24,8 @@
                             <th>{{trans('backend.user.email')}}</th>
                             <th>{{trans('backend.global.created_at')}}</th>
                             <th>{{trans('backend.global.updated_at')}} </th>
+                            <th>{{trans('backend.global.status')}}</th>
+                            <th>{{trans('backend.global.actions')}}</th>
                         </tr>
                         </thead>
                         <tbody>

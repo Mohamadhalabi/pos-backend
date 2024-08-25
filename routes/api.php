@@ -223,3 +223,8 @@ Route::post('/login', [\App\Http\Controllers\Api\Frontend\User\Auth\AuthControll
 Route::middleware('auth:sanctum')->post('/logout', [\App\Http\Controllers\Api\Frontend\User\Auth\AuthController::class, 'logout']);
 
 Route::post('/create-order', [\App\Http\Controllers\Api\Frontend\OrderController::class, 'create_order'])->name('create_order');
+Route::get('/search-products', [\App\Http\Controllers\Api\Frontend\SearchController::class, 'search_product'])->name('search_product');
+
+
+
+Route::get('/get-settings',[\App\Http\Controllers\Api\Frontend\SettingController::class, 'get'])->name('get_settings');

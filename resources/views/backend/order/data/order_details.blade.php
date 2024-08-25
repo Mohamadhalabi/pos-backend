@@ -7,7 +7,6 @@
             <h6>#{{$order->uuid}}</h6>
         </div>
         <div class="card-toolbar">
-            {!! $qr !!}
         </div>
     </div>
     <!--end::Card header-->

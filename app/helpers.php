@@ -73,6 +73,28 @@ if (!function_exists('single_image')) {
             $height =500;
             $width =500;
         }
+
+        if($name =="system_logo_white")
+        {
+            $height = 50;
+            $width = 50;
+        }
+
+        if($name =="system_logo_icon"){
+            $height = 32;
+            $width = 32;
+        }
+
+        if($name =="system_logo_black"){
+            $width = 1035;
+            $heihgt = 316;
+        }
+
+        if($name =="default_images"){
+            $width = 400;
+            $height = 400;
+        }
+
         else{
             $height = 150;
             $width = 150;

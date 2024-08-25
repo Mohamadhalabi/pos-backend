@@ -7,7 +7,6 @@
             </h3>
 
             <div class="card-toolbar">
-                {!! $qr !!}
             </div>
         </div>
         <div class="card-body pt-5">

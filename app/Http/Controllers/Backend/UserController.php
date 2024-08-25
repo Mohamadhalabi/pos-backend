@@ -79,6 +79,8 @@ class UserController extends Controller
         $datatable_columns['email'] = 'email';
         $datatable_columns['created_at'] = 'created_at';
         $datatable_columns['updated_at'] = 'updated_at';
+        $datatable_columns['status'] = 'status';
+        $datatable_columns['actions'] = 'actions';
         #endregion
 
         $sellers_ids = User::pluck('seller_id');
@@ -175,7 +177,7 @@ class UserController extends Controller
             })
             ->editColumn('seller', function ($q) {
                 return $q->seller ?
-                    '<a href="' . route('backend.sellers.edit', ['seller' => $q->seller_id]) . '"
+                    '<a href="' . route('backend.sellers.editSeller', ['seller' => $q->seller_id]) . '"
                                                        class="symbol symbol-50px  ">
                                                        <span class="badge badge-light-primary badge-lg">
                                                        ' . $q->seller . '</span>
@@ -545,17 +547,10 @@ class UserController extends Controller
         $datatable_columns = [];
         $datatable_columns['id'] = 'id';
         $datatable_columns['uuid'] = 'uuid';
-        $datatable_columns['seller'] = 'sellers.name';
-        $datatable_columns['payment_method'] = 'payment_method';
-        $datatable_columns['payment_status'] = 'payment_status';
         $datatable_columns['total'] = 'total';
-        $datatable_columns['shipping'] = 'shipping';
         $datatable_columns['status'] = 'status';
-        $datatable_columns['coupon'] = 'coupon_value';
         $datatable_columns['type'] = 'type';
-        $datatable_columns['tracking_number'] = 'tracking_number';
         $datatable_columns['created_at'] = 'created_at';
-        $datatable_columns['actions'] = 'actions';
 
         $datatable_script = $this->create_script_datatable($datatable_route, $datatable_columns);
         $view = view('backend.user.data.orders', compact('datatable_script'))->render();
@@ -591,7 +586,7 @@ class UserController extends Controller
             })
             ->editColumn('seller', function ($q) {
                 return $q->seller ?
-                    '<a href="' . route('backend.sellers.edit', ['seller' => $q->seller_id]) . '"
+                    '<a href="' . route('backend.sellers.editSeller', ['seller' => $q->seller_id]) . '"
                                                        class="symbol symbol-50px  ">
                                                        <span class="badge badge-light-success badge-lg">
                                                        ' . $q->seller . '</span>
