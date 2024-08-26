@@ -40,6 +40,7 @@ class CategoryController extends Controller
         ->where('products.status', 1)
         ->where('categories.status', 1)
         ->whereNull('products.deleted_at')
+        ->whereNull('categories.deleted_at')
         ->select('products.*'); // Adjust the selected fields as needed
         
         // If the selected category is not 'all', filter by category
