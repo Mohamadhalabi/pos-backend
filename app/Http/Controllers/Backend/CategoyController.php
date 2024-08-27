@@ -133,7 +133,7 @@ class CategoyController extends Controller
         if (!permission_can('create category', 'admin')) {
             return abort(403);
         }
-        $categories = Category::all();
+        $categories = Category::where('status',1)->whereNull('deleted_at')->get();
         return view('backend.category.create', compact('categories'));
     }
 
@@ -156,12 +156,12 @@ class CategoyController extends Controller
 
         $category->slug = str_replace(' ', '-', $name['en']);
 
-        // if ($request->parent != 0) {
-            // $category->parent_id = $request->parent;
-            // $category->type = Category::find($request->parent)->type;
-        // } else {
-            // $category->type = $request->type;
-        // }
+        if ($request->parent != 0) {
+            $category->parent_id = $request->parent;
+        }
+        else{
+            $category->parent_id = NULL;
+        }
 
         // $category->banner = $request->banner;
         $category->icon = $request->icon;
@@ -197,8 +197,16 @@ class CategoyController extends Controller
         }
         $category->name = $name;
 
+        if($request->parent == 0){
+            $cat = NULL;
+        }
+        else{
+            $cat = $request->parent;
+        }
+
         $category->icon = $request->icon;
         $category->status = $request->has('status') ? 1 : 0;
+        $category->parent_id = $cat;
         $category->save();
         return redirect()->route('backend.categories.edit', $category)->with('success', trans('backend.global.success_message.updated_successfully'));
     }

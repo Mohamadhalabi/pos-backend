@@ -50,6 +50,16 @@
                                     </div>
 
                                 </div>
+                                                                <!-- Timer Input Field -->
+                                <div class="row">
+                                    <div class="col form-group">
+                                        <label class="form-label" for="ends_on_{{ $language->code }}">Ends on :</label>
+                                        <input type="datetime-local" class="form-control" id="ends_on_{{ $language->code }}" 
+                                               name="ends_on_{{ $language->code }}" value="{{ $slider->ends_on }}">
+                                        @error('ends_on_' . $language->code)<b class="text-danger"> <i
+                                                class="las la-exclamation-triangle"></i> {{ $message }}</b>@enderror
+                                    </div>
+                                </div>
 
                             </div>
                         @endforeach

@@ -76,6 +76,13 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-12">
+                        <div class="mb-10"><textarea type="text" class="form-control" name="address">{{$user->address}}</textarea>
+                        </div>
+                    </div>
+                </div>
                 <div class="row mb-6">
                     <div class="col-12 col-sm-6  align-items-center">
                         <div class="form-group  align-items-center">
@@ -91,7 +98,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div class="card-footer">

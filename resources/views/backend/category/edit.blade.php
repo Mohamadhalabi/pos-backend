@@ -44,7 +44,7 @@
                         </div>
                     @endforeach
                     <div class="col form-group ">
-                        <label class="form-label" for="icon">150x150</label>
+                        <label class="form-label" for="icon">200x200</label>
                         <br>
                         {!! single_image('icon' , media_file(old('icon', $category->icon)) , old('icon', $category->icon)  ) !!}
                         <br>
@@ -58,6 +58,24 @@
             <div class="card-body">
                 <div class="form-group row">
                     <div class="col  align-items-center">
+                    <div class="col form-group">
+                        <label class="form-label" for="parent">{{trans('backend.category.parent')}}</label>
+                        <select class="form-control parent" data-placeholder="{{ trans('backend.category.parent') }}" data-control="select2" name="parent" id="parent">
+                            <option value="0" @if(old('parent', $category->parent_id) == 0) selected @endif>{{ trans('backend.category.parent') }}</option>
+                            
+                            @foreach($categories as $categoryy)
+                                @if($category->id != $categoryy->id) {{-- Avoid listing the category itself --}}
+                                    <option value="{{ $categoryy->id }}" @if(old('parent', $category->parent_id) == $categoryy->id) selected @endif>
+                                        {{ $categoryy->name }}
+                                    </option>
+                                @endif
+                            @endforeach
+                        </select>
+
+                        @error('parent')<b class="text-danger"> <i class="las la-exclamation-triangle"></i> {{$message}}</b>@enderror
+                    </div>
+
+                    <br><br>
                         <div class="form-group  align-items-center">
                             <br>
                             <div class="form-check form-switch form-check-custom form-check-solid me-10">

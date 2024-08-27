@@ -96,8 +96,8 @@ if (!function_exists('single_image')) {
         }
 
         else{
-            $height = 150;
-            $width = 150;
+            $height = 200;
+            $width = 200;
         }
         if (isset($option['height']) && !empty($option['height'])) {
             $height = $option['height'];

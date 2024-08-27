@@ -37,8 +37,11 @@
             <div class="col-12 col-md-12 mt-2">
                 <label for="category" class="required form-label">{{trans('backend.product.category')}}</label>
                 <select data-control="select2" class="form-control" required id="category" name="category">
-                    <option value="null"></option>
-                    {!! \App\Models\Category::select2([old('category',$product->category_id)],0,0) !!}
+                    @foreach($categories as $categoryy)
+                        <option value="{{ $categoryy->id }}" @if($category && $category->id == $categoryy->id) selected @endif>
+                            {{ $categoryy->name }}
+                        </option>
+                    @endforeach
                 </select>
                 <b class="text-danger" id="error_category"> @error('category') <i
                         class="fa fa-exclamation-triangle"></i> {{$message}} @enderror</b>

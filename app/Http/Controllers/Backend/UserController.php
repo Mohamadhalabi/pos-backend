@@ -295,6 +295,7 @@ class UserController extends Controller
             $user->password = Hash::make($request->password);
         }
         $user->status = $request->has('status') ? 1 : 0;
+        $user->address = $request->address;
         $user->save();
         return redirect()->route('backend.users.show', ['user' => $user->id])->with('success', trans('backend.global.success_message.updated_successfully'));
     }

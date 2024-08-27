@@ -16,7 +16,7 @@ class Slider extends Model
     use SerializeDateTrait;
     use LogsActivity;
 
-    protected $fillable = ['image', 'link', 'status', 'type'];
+    protected $fillable = ['image', 'link', 'status', 'type','ends_on'];
     public $translatable = ['image', 'link'];
 //    public $main = 'main';
     public $banner = 'banner';

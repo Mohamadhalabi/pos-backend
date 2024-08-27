@@ -19,8 +19,10 @@ class SettingController extends Controller
 
         $acceptLanguage = request()->header('Accept-Language');
 
-        $sliders = Slider::where('status',1)->get();
-
+        $sliders = Slider::where('status', 1)
+        ->where('ends_on', '>', now())
+        ->get();
+    
         $products = Product::join('categories', 'products.category_id', '=', 'categories.id')
         ->where('products.status', 1)
         ->where('categories.status', 1)

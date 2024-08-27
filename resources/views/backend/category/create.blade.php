@@ -44,8 +44,9 @@
 
                     </div>
                     <div class="col form-group ">
+                        
                         <br>
-                            <label class="form-label" for="icon">150x150</label>
+                            <label class="form-label" for="icon">200x200</label>
                             <br>
                             {!! single_image('icon' , media_file(old('icon')) , old('icon')  ) !!}
                             <br>
@@ -55,6 +56,25 @@
 
                     <div class="form-group row">
                         <div class="col  align-items-center">
+
+                        <br><br>
+                        <div class="col form-group">
+                            <label class="form-label" for="parent">{{trans('backend.category.parent')}}</label>
+                            <select class="form-control parent" data-placeholder="{{trans('backend.category.parent')}}" data-control="select2" name="parent" id="parent">
+                                <option selected value="0">{{trans('backend.category.parent')}}</option>
+
+                                @foreach($categories as $category)
+                                    @if($category->parent_id == NULL)
+                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                    @endif
+                                @endforeach
+
+                                <!--<option value="1">{{trans('backend.category.other_value')}}</option> <!-- Add the second value option -->-->
+                            </select>
+                            @error('parent')<b class="text-danger"> <i class="las la-exclamation-triangle"></i> {{$message}}</b>@enderror
+                        </div>
+
+
                             <div class="form-group  align-items-center">
                                 <br>
                                 <div class="form-check form-switch form-check-custom form-check-solid me-10">

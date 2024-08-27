@@ -14,7 +14,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::where('status',1)->whereNull('deleted_at')->get();
+        $categories = Category::where('status',1)->whereNull('deleted_at')->whereNull('parent_id')->get();
         $categories_data = [];
         foreach($categories as $category){
             $categories_data [] = [
@@ -22,7 +22,7 @@ class CategoryController extends Controller
                 'name' => $category->name,
                 'slug' => $category->slug,
                 'icon' => media_file($category->icon),
-                'products_count' => Product::where('status',1)->whereNull('deleted_at')->where('category_id',$category->id)->count(),
+                'products_count' => Category::where('status',1)->whereNull('deleted_at')->where('parent_id',$category->id)->count(),
             ];
         }
         return response()->api_data($categories_data);
@@ -114,53 +114,60 @@ class CategoryController extends Controller
         ]);
     }
     
-    public function products_by_category(Request $request)
+    public function products_by_category($id, Request $request)
     {
-        $categoryId = $request->input('category_id');
-        
-        $query = Product::where('status', 1)->whereNull('deleted_at');
+        // The $id parameter from the route corresponds to the category ID
+        // Use it directly instead of $request->input('category_id')
     
-        if ($categoryId !== 'all') {
-            $query->where('category_id', $categoryId);
+        // Check if the provided category ID is valid (optional)
+        if (!is_numeric($id)) {
+            return response()->json(['error' => 'Invalid category ID'], 400);
         }
     
+        // Initialize the query for products
+        $query = Product::where('status', 1)->whereNull('deleted_at');
+    
+        // Filter by category ID if it's not 'all'
+        if ($id !== 'all') {
+            $query->where('category_id', $id);
+        }
+    
+        // Paginate the results
         $products = $query->paginate(1);
     
         $products_data = [];
     
         foreach ($products as $product) {
             $category = Category::where('id', $product->category_id)->first();
-
-            if(json_decode($product->gallery,true) == [])
-            $gallery = [media_file($product->image)];
-            
-            
-            foreach (json_decode($product->gallery, true) ?? [] as $image)
-            {
-                $gallery[] = media_file($image);
+    
+            // Handle the gallery images
+            $gallery = json_decode($product->gallery, true) ?? [];
+            if (empty($gallery)) {
+                $gallery = [media_file($product->image)];
+            } else {
+                $gallery = array_map('media_file', $gallery);
+                array_unshift($gallery, media_file($product->image)); // Include the main image as the first item
             }
-            
-            $category = Category::where('id', $product->category_id)->first();
-
-
-            $products_attribute = ProductsAttribute::where('product_id',$product->id)->pluck('sub_attribute_id')->toArray();
-            
-            $sub_attributes = SubAttribute::whereIn('id',$products_attribute)->get();
-
-            foreach($sub_attributes as $sub_attribute)
-            {
-                $attrib = Attribute::where('id',$sub_attribute->attribute_id)->first();
-                $attribute_data [] = [
+    
+            // Retrieve product attributes
+            $products_attribute = ProductsAttribute::where('product_id', $product->id)->pluck('sub_attribute_id')->toArray();
+            $sub_attributes = SubAttribute::whereIn('id', $products_attribute)->get();
+    
+            $attribute_data = [];
+            foreach ($sub_attributes as $sub_attribute) {
+                $attrib = Attribute::where('id', $sub_attribute->attribute_id)->first();
+                $attribute_data[] = [
                     'sub_attribute' => $sub_attribute->value,
                     'attribute' => $attrib->name,
                 ];
             }
     
+            // Prepare the product data
             $products_data[] = [
                 'id' => $product->id,
                 'sku' => $product->sku,
                 'name' => $product->title,
-                'category' => $category->name,
+                'category' => $category ? $category->name : null,
                 'price' => $product->price,
                 'sale_price' => $product->sale_price,
                 'image' => media_file($product->image),
@@ -170,7 +177,8 @@ class CategoryController extends Controller
             ];
         }
     
-        return response()->api_data([
+        // Return the response with products and pagination
+        return response()->json([
             'products' => $products_data,
             'pagination' => [
                 'total' => $products->total(),
@@ -179,7 +187,27 @@ class CategoryController extends Controller
                 'last_page' => $products->lastPage(),
                 'from' => $products->firstItem(),
                 'to' => $products->lastItem(),
-            ]
+            ],
         ]);
+    }
+    
+
+    public function get_sub_categories(Request $request)
+    {
+        $categories = Category::where('status', 1)
+        ->whereNull('deleted_at')
+        ->where('parent_id', $request->sub_category)
+        ->get();
+        $categories_data = [];
+        foreach($categories as $category){
+            $categories_data [] = [
+                'id' => $category->id,
+                'name' => $category->name,
+                'slug' => $category->slug,
+                'icon' => media_file($category->icon),
+                'products_count' => Product::where('status',1)->whereNull('deleted_at')->where('category_id',$category->id)->count(),
+            ];
+        }
+        return response()->json($categories_data);
     }
 }

@@ -426,6 +426,7 @@ class ProductController extends Controller
             return abort(403);
         }
         $product = Product::findOrFail($id);
+
         $sku = $product->sku;
 //        $products_brands = ProductsBrand::query()->where('product_id', $id)->groupBy('brand_model_id')->get();
 //        $products_years = ProductsBrand::query()->where('product_id', $id)->groupBy('brand_model_year_id')->pluck('brand_model_year_id')->toArray();
@@ -484,7 +485,11 @@ class ProductController extends Controller
             $serial_number_ids[] = $item->id;
             $serial_number_value[] = $item->serial_number;
         }
-        $categories = Category::query()->where('status', 1)->get();
+        $categories = Category::whereNotNull('parent_id')->where('status',1)->whereNull('deleted_at')->get();
+
+
+        $category = Category::where('id',$product->category_id)->first();
+
         $colors = Color::query()->where('status', 1)->get();
         $brands = Brand::query()->where('status', 1)->get();
         $attributes = Attribute::query()->where('status', 1)->get();
@@ -553,7 +558,7 @@ class ProductController extends Controller
 
         return view('backend.product.edit', compact('product', 'to', 'sku', 'bundles', 'google_merchant', 'shipping_cost', 'countries',
             'accessories', 'serial_number_value', 'serial_number_ids', 'from', 'packages_price', 'products_brands', 'switch_script', 'datatable_script',
-            'products_attributes', 'products_serial_numbers', 'categories', 'colors', 'brands', 'attributes', 'manufacturers'));
+            'products_attributes', 'products_serial_numbers', 'categories', 'colors', 'brands', 'attributes', 'manufacturers','category'));
     }
 
     function update(UpdateRequest $request, $id)

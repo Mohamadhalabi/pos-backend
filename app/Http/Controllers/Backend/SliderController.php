@@ -101,18 +101,38 @@ class SliderController extends Controller
 
     public function store(CreateRequest $request)
     {
+        // Initialize arrays for image, link, and ends_on
+        $image = [];
+        $link = [];
+        $endsOn = [];
+    
         foreach (get_languages() as $language) {
-            $image [$language->code] = $request->has('image_' . $language->code) && !empty($request->get('image_' . $language->code)) ? $request->get('image_' . $language->code) : $request->get('image_' . get_languages()[0]->code);
-            $link [$language->code] = $request->has('link_' . $language->code) && !empty($request->get('link_' . $language->code)) ? $request->get('link_' . $language->code) : $request->get('link_' . get_languages()[0]->code);
-        }
-
+            // Handle images
+            $image[$language->code] = $request->has('image_' . $language->code) && !empty($request->get('image_' . $language->code)) 
+                ? $request->get('image_' . $language->code) 
+                : $request->get('image_' . get_languages()[0]->code);
+            
+            // Handle links
+            $link[$language->code] = $request->has('link_' . $language->code) && !empty($request->get('link_' . $language->code)) 
+                ? $request->get('link_' . $language->code) 
+                : $request->get('link_' . get_languages()[0]->code);
+            
+            // Handle ends_on
+            $endsOn[$language->code] = $request->has('ends_on_' . $language->code) && !empty($request->get('ends_on_' . $language->code)) 
+                ? $request->get('ends_on_' . $language->code) 
+                : null; // Set default value or handle as needed
+        }    
+        // Create the slider with the collected data
         Slider::create([
             'image' => $image,
             'link' => $link,
-            'status'=> $request->status]);
-
+            'ends_on' => $endsOn['en'], // Add ends_on to the creation
+            'status' => $request->status,
+        ]);
+    
         return redirect()->route('backend.cms.sliders.index')->with('success', trans('backend.global.success_message.created_successfully'));
     }
+    
     #endregion
 
     #region edit
@@ -133,10 +153,15 @@ class SliderController extends Controller
         foreach (get_languages() as $language) {
             $image [$language->code] = $request->get('image_' . $language->code) ;
             $link [$language->code] = $request->get('link_' . $language->code);
+            $endsOn[$language->code] = $request->has('ends_on_' . $language->code) && !empty($request->get('ends_on_' . $language->code)) 
+            ? $request->get('ends_on_' . $language->code) 
+            : null; // Set default value or handle as needed
+
         }
         $slider->update([
             'image' => $image,
             'link' => $link,
+            'ends_on' => $endsOn['en'],
             'status'=> $request->status?1:0]);
 
         return redirect()->route('backend.cms.sliders.index')->with('success', trans('backend.global.success_message.updated_successfully'));

@@ -31,6 +31,8 @@
                 <h4 class="menu-content text-muted mb-0 fs-7 text-uppercase">{{trans('backend.menu.users')}}</h4>
             </div>
             @include('backend.user.sidebar')
+            @include('backend.management.sidebar')
+
         </div>
     </div>
 </div>

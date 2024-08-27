@@ -216,7 +216,7 @@ Route::group(['prefix' => 'search'], function () {
 
 Route::get('/categories', [\App\Http\Controllers\Api\Frontend\CategoryController::class, 'index']);
 Route::get('/all-products',[\App\Http\Controllers\Api\Frontend\CategoryController::class, 'all_products']);
-Route::get('/category-products',[\App\Http\Controllers\Api\Frontend\CategoryController::class, 'products_by_category'])->name('category.products');
+// Route::get('/category-products',[\App\Http\Controllers\Api\Frontend\CategoryController::class, 'products_by_category'])->name('category.products');
 
 Route::post('/register', [\App\Http\Controllers\Api\Frontend\User\Auth\AuthController::class, 'register']);
 Route::post('/login', [\App\Http\Controllers\Api\Frontend\User\Auth\AuthController::class, 'login']);
@@ -228,3 +228,7 @@ Route::get('/search-products', [\App\Http\Controllers\Api\Frontend\SearchControl
 
 
 Route::get('/get-settings',[\App\Http\Controllers\Api\Frontend\SettingController::class, 'get'])->name('get_settings');
+
+Route::get('/get-sub-categories',[\App\Http\Controllers\Api\Frontend\CategoryController::class, 'get_sub_categories']);
+
+Route::post('/products-by-category/{id}', [\App\Http\Controllers\Api\Frontend\CategoryController::class, 'products_by_category'])->name('category.products');
