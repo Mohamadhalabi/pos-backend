@@ -136,6 +136,20 @@ $(document).ready(function () {
     $("#FileMangerModelBodyReview").hide()
 
 
+    $("#getLocation").click(function() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(locationSuccess);
+        } 
+    });
+
+    function locationSuccess(position) {
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+
+        $('#longitude').val(longitude);
+        $('#latitude').val(latitude);
+    }
+
 });
 
 function draggable_refresh() {

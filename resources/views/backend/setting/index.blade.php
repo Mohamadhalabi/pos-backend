@@ -108,6 +108,38 @@
                             </div>
 
                         </div>
+
+                        <div class="row mb-6">
+                            <div class="col-lg-6 col-12">
+                                <label for="shipping_price"
+                                    class="col-lg-12 col-form-label fw-bold fs-6">Shipping price per metre (example 10 Liras for each metre)</label>
+                                <input type="number" id="shipping_price" value="{{get_setting('shipping_price')}}" step="any" name="shipping_price" class="form-control" />
+                           </div>
+                        </div>
+
+                        <div class="row mb-6">
+                            <div class="col-lg-6 col-12">
+                                <label for="vat"
+                                    class="col-lg-12 col-form-label fw-bold fs-6">VAT % (Applied on all products)</label>
+                                <input type="number" id="vat" value="{{get_setting('vat')}}" step="any" name="vat" class="form-control" />
+                           </div>
+                        </div>
+
+                        <div class="row mb-6">
+                            <div class="col-lg-6 col-12">
+                                <label for="longitude"
+                                    class="col-lg-4 col-form-label fw-bold fs-6">Longitude</label>
+                                <input type="number" id="longitude" value="{{get_setting('longitude')}}" step="any" name="longitude" class="form-control" />
+                           </div>
+                           <div class="col-lg-6 col-12">
+                               <label for="latitude" class="col-lg-4 col-form-label fw-bold fs-6">Latitude</label>
+                                <input type="number" id="latitude" step="any" value="{{get_setting('latitude')}}" name="latitude" class="form-control" />
+                             </div>
+                             <div class="col-lg-4 col-8 mt-4">
+                             <button type="button" id="getLocation" class="btn btn-warning">Get location</button>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="card-footer d-flex justify-content-end py-6 px-9">
                         <button type="submit" class="btn btn-primary">{{trans('backend.global.save')}}</button>
