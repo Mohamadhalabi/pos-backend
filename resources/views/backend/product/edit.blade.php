@@ -45,7 +45,7 @@
                     @include('backend.product.edit.information.name_and_description')
                     @include('backend.product.edit.attribute.values')
                     <!-- @include('backend.product.edit.attribute.brand') -->
-                    <!-- @include('backend.product.edit.price.price_renge') -->
+                    @include('backend.product.edit.price.price_renge')
                     <!-- @include('backend.product.edit.media.videos') -->
                     <!-- @include('backend.product.edit.media.pdf') -->
                 </div>

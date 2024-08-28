@@ -37,6 +37,8 @@
             <div class="col-12 col-lg-8 col-md-8">
                 @include('backend.product.create.information.name_and_description')
                 @include('backend.product.create.attribute.values')
+                @include('backend.product.create.price.price_renge')
+
             </div>
             <div class="col-12 col-lg-3 col-md-3">
                 @include('backend.product.create.information.more_information')
