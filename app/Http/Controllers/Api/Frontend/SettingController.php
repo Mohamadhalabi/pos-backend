@@ -46,8 +46,10 @@ class SettingController extends Controller
         $system_name = $value; // Fallback to 'en' if the locale is not present
 
 
-
-        
+        $shipping_cost  = Setting::where('type','shipping_price')->first();
+        $vat_cost = Setting::where('type','vat')->first();
+        $longitude = Setting::where('type','longitude')->first();
+        $latitude = Setting::where('type','latitude')->first();
 
         $website_setting = [
             'system_name' => $system_name
@@ -63,7 +65,15 @@ class SettingController extends Controller
 
         $setting['website'] = $website_setting;
 
-        return response()->data(['setting' => $setting , 'sliders' => $sliders_data, 'products_count' => $products]);
+        return response()->data([
+            'setting' => $setting ,
+            'sliders' => $sliders_data,
+            'products_count' => $products,
+            'shipping_cost' => $shipping_cost->value,
+            'vat_cost' => $vat_cost->value,
+            'longitude' => $longitude->value,
+            'latitude' => $latitude->value,
+        ]);
     }
 
 }

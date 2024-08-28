@@ -1029,16 +1029,16 @@ class ProductController extends Controller
         #endregion
 
         #region packages
-        // if ($request->has('packages_price') && !empty($request->packages_price)) {
-        //     foreach ($request->packages_price as $key => $item) {
-        //         $productsPackages = new ProductsPackages();
-        //         $productsPackages->from = $request->from[$key];
-        //         $productsPackages->to = $request->to[$key];
-        //         $productsPackages->price = $item;
-        //         $productsPackages->product_id = $product->id;
-        //         $productsPackages->save();
-        //     }
-        // }
+        if ($request->has('packages_price') && !empty($request->packages_price)) {
+            foreach ($request->packages_price as $key => $item) {
+                $productsPackages = new ProductsPackages();
+                $productsPackages->from = $request->from[$key];
+                $productsPackages->to = $request->to[$key];
+                $productsPackages->price = $item;
+                $productsPackages->product_id = $product->id;
+                $productsPackages->save();
+            }
+        }
         #endregion
 
         #region serial numbers

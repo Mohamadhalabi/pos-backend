@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\ProductsAttribute;
 use App\Models\Attribute;
 use App\Models\SubAttribute;
+use App\Models\ProductsPackages;
 
 class CategoryController extends Controller
 {
@@ -150,15 +151,20 @@ class CategoryController extends Controller
             }
     
             // Retrieve product attributes
-            $products_attribute = ProductsAttribute::where('product_id', $product->id)->pluck('sub_attribute_id')->toArray();
-            $sub_attributes = SubAttribute::whereIn('id', $products_attribute)->get();
-    
+            $products_attribute = ProductsPackages::where('product_id', $product->id)->get();
+
+            $product_attrb = ProductsAttribute::where('product_id',$product->id)->pluck('sub_attribute_id');
+
+            $sub_attributes_id = SubAttribute::whereIn('id',$product_attrb)->where('attribute_id',1)->first();
+
+            
             $attribute_data = [];
-            foreach ($sub_attributes as $sub_attribute) {
-                $attrib = Attribute::where('id', $sub_attribute->attribute_id)->first();
+            foreach ($products_attribute as $sub_attribute) {
                 $attribute_data[] = [
-                    'sub_attribute' => $sub_attribute->value,
-                    'attribute' => $attrib->name,
+                    'from' => $sub_attribute->from,
+                    'to' => $sub_attribute->to,
+                    'price' => $sub_attribute->price,
+                    'unit' => $sub_attributes_id->value,
                 ];
             }
     
