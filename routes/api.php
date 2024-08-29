@@ -232,3 +232,4 @@ Route::get('/get-settings',[\App\Http\Controllers\Api\Frontend\SettingController
 Route::get('/get-sub-categories',[\App\Http\Controllers\Api\Frontend\CategoryController::class, 'get_sub_categories']);
 
 Route::post('/products-by-category/{id}', [\App\Http\Controllers\Api\Frontend\CategoryController::class, 'products_by_category'])->name('category.products');
+Route::get('/notify-me', [\App\Http\Controllers\Api\Frontend\OrderController::class, 'notify_me'])->name('notify.me');

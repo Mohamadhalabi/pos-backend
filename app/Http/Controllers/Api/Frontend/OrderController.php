@@ -22,6 +22,7 @@ use App\Models\Color;
 use App\Models\Coupon;
 use App\Models\CouponUsages;
 use App\Models\Currency;
+use App\Models\OutOfStock;
 use App\Models\Order;
 use App\Models\OrderPayment;
 use App\Models\OrdersProducts;
@@ -738,5 +739,17 @@ class OrderController extends Controller
         return response()->json([
             'whatsapp_link' => $whatsappLink,
         ]);
+    }
+    function notify_me(Request $request)
+    {
+        $out_of_stock = new OutOfStock();
+
+        $product = Product::where('sku',$request->sku)->first();
+
+        $out_of_stock->product_id = $product->id;
+        $out_of_stock->email = $request->email;
+        $out_of_stock->save();
+
+        return response()->data(['success' => true]);
     }
 }

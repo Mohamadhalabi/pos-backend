@@ -99,6 +99,7 @@ class CategoryController extends Controller
                 'gallery' => $gallery,
                 'attributes' => $attribute_data,
                 'description' => $product->description,
+                'quantity' => $product->quantity,
             ];
         }
     
@@ -180,6 +181,7 @@ class CategoryController extends Controller
                 'gallery' => $gallery,
                 'attributes' => $attribute_data,
                 'description' => $product->description,
+                'quantity' => $product->quantity,
             ];
         }
     

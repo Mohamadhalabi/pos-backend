@@ -9,4 +9,5 @@ class OutOfStock extends Model
 {
     use HasFactory;
     protected $table = 'out_of_stocks';
+    protected $fillable = ['product_id','email'];
 }

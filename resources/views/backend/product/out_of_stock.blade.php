@@ -13,21 +13,12 @@
             </div>
             <div class="card-body">
                 <table id="datatable" class="table table-striped table-row-bordered gy-5 gs-7">
-                    <div class="row">
-                        {!! multi_select_2('products', $products, 'backend.menu.products') !!}
-
-                        {!! apply_filter_button() !!}
-                    </div>
-
-
                     <thead>
                     <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200">
                         <th class="">{{trans('backend.global.id')}}</th>
                         <th class=" min-w-150px">{{trans('backend.product.sku')}}</th>
-                        <th class=" min-w-150px">{{trans('backend.product.request_count')}}</th>
-                        <th class=" min-w-150px">{{trans('backend.product.last_request')}}</th>
-
-                        <th class=" min-w-250px">{{trans('backend.global.actions')}}</th>
+                        <th class=" min-w-150px">Request By</th>
+                        <th class=" min-w-150px">Request Date</th>
                     </tr>
                     </thead>
                 </table>

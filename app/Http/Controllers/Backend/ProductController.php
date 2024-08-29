@@ -695,6 +695,7 @@ class ProductController extends Controller
         // $product->accessories = json_encode($request->has('accessories') && !empty($request->accessories) ? $request->accessories : []);
         // $product->blocked_countries = $request->blocked_countries;
         #endregion
+        $product->quantity = $request->quantity;
         $product->status = $request->has('status') && $request->status == 1;
         // $product->is_best_seller = $request->has('is_best_seller') && $request->is_best_seller == 1;
         // $product->is_saudi_branch = $request->has('is_saudi_branch') && $request->is_saudi_branch == 1;
@@ -1097,12 +1098,12 @@ class ProductController extends Controller
         $datatable_columns = [];
         $datatable_columns['id'] = 'id';
         $datatable_columns['sku'] = 'products.sku';
-        $datatable_columns['cnt'] = 'cnt';
+        $datatable_columns['email'] = 'email';
         $datatable_columns['last_request'] = 'out_of_stocks.updated_at';
-        $datatable_columns['actions'] = 'actions';
+        // $datatable_columns['actions'] = 'actions';
         #endregion
         $datatable_script = $this->create_script_datatable($datatable_route, $datatable_columns, null, $filters);
-        $products = Product::query()->where('quantity', 0)->whereHas('outOfStock')->pluck('sku', 'id');
+        $products = Product::query()->where('quantity', 0)->pluck('sku', 'id');
 
         return view('backend.product.out_of_stock', compact('datatable_script', 'products'));
     }
@@ -1111,27 +1112,18 @@ class ProductController extends Controller
     {
 //        $model = Product::query()->where('quantity', 0)->whereHas('outOfStock');
         $model = OutOfStock::query()
-            ->select('out_of_stocks.*', DB::raw('max(out_of_stocks.updated_at) as last_request'), DB::raw('count(product_id) as cnt'), 'products.sku', 'products.title', 'products.slug')
-            ->join('products', 'products.id', 'out_of_stocks.product_id')
-            ->groupBy('out_of_stocks.product_id');
+        ->join('products', 'out_of_stocks.product_id', '=', 'products.id') // Join with the products table
+        ->select('out_of_stocks.*', 'products.sku');// Select fields from both tables
+
         if ($request->products != null) {
             $model->where('id', $request->products);
         }
         return datatables()->make($model)
-            ->filterColumn('cnt', function ($query, $keyword) {
-//                $query->whereRaw($sql, ["%{$keyword}%"]);
-            })
-            ->filterColumn('cnt', function ($query, $keyword) {
-//                $query->whereRaw($sql, ["%{$keyword}%"]);
-            })
             ->editColumn('id', function ($q) {
                 return $q->id;
             })
-            ->addColumn('request_count', function ($q) {
-                return $q->count;
-            })
             ->editColumn('last_request', function ($q) {
-                return $q->last_request;
+                return $q->updated_at;
             })
             ->addColumn('actions', function ($q) {
                 return $this->btn(route('backend.products.product_requests', ['product_id' => $q->product_id]), '', 'las la-eye', 'btn-warning btn-show btn-icon');
@@ -1144,7 +1136,7 @@ class ProductController extends Controller
                                                        ' . $q->sku . '</span>
                                                     </a>';
             })
-            ->rawColumns(['actions', 'last_request', 'request_count', 'sku'])
+            ->rawColumns(['actions', 'last_request', 'sku'])
             ->toJson();
     }
 
