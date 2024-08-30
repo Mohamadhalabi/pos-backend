@@ -13,6 +13,8 @@
             @include('backend.category.sidebar')
             @include('backend.attribute.sidebar')
             @include('backend.product.sidebar')
+            @include('backend.coupon.sidebar')
+
             <!-- Coupon will be Added  -->
             <!-- <div class="menu-item">
                 <h4 class="menu-content text-muted mb-0 fs-7 text-uppercase">{{trans('backend.menu.orders')}}</h4>

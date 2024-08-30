@@ -29,48 +29,12 @@
                     </div>
                     <div class="col">
                         <div class="row mb-10">
-                            <label for="max_use"
-                                   class="col-lg-4 col-md-6 col-form-label form-label required">{{trans('backend.coupon.max_use')}}</label>
-                            <div class="col-lg-8 fv-row fv-plugins-icon-container">
-                                <div class="row">
-
-                                    <div class="mb-0 col-12">
-                                        <input class="form-control form-control"
-                                               id="max_use" name="max_use" type="number" min="1"
-                                               value="{{old('max_use')}}"/>
-                                        @error('max_use') <b class="text-danger"><i
-                                                class="las la-exclamation-triangle"></i> {{$message}} </b> @enderror
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="row mb-10">
-                            <label for="per_user"
-                                   class="col-lg-4 col-md-6 col-form-label form-label required">{{trans('backend.coupon.per_user')}}</label>
-                            <div class="col-lg-8 fv-row fv-plugins-icon-container">
-                                <div class="row">
-
-                                    <div class="mb-0 col-12">
-                                        <input class="form-control form-control"
-                                               id="per_user" name="per_user" type="number" min="1"
-                                               value="{{old('per_user')}}"/>
-                                        @error('per_user') <b class="text-danger"><i
-                                                class="las la-exclamation-triangle"></i> {{$message}} </b> @enderror
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="row mb-10">
                             <label for="discount"
                                    class="col-lg-4 col-md-6 col-form-label form-label required">{{trans('backend.coupon.discount')}}</label>
                             <div class="col-lg-8 fv-row fv-plugins-icon-container">
                                 <div class="row">
 
-                                    <div class="mb-0 col-10">
+                                    <div class="mb-0 col-12">
                                         <input class="form-control form-control"
                                                id="discount" name="discount" type="number" step="0.001" min="1"
                                                value="{{old('discount')}}"/>
@@ -78,43 +42,9 @@
                                                 class="las la-exclamation-triangle"></i> {{$message}} </b> @enderror
 
                                     </div>
-
-                                    <div class="mb-0 col-2">
-                                        <select class="form-control" id="discount_type" name="discount_type" required
-                                                data-control="select2"
-                                                data-placeholder="Type">
-                                            <option selected value="{{null}}"></option>
-                                            @foreach($discount_types as $type)
-                                                <option value="{{$type}}"
-                                                        {{old('discount_type') == $type? "selected":"" }}>{{$type}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('discount_type') <b class="text-danger"><i
-                                                    class="las la-exclamation-triangle"></i> {{$message}} </b> @enderror
-
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col">
-                        <div class="row mb-10">
-                            <label for="type"
-                                   class="col-lg-4 col-form-label required">{{trans('backend.coupon.type')}}</label>
-                            <div class="col-lg-8 fv-row fv-plugins-icon-container">
-                                <select class="form-control" id="type" name="type" data-control="select2" required
-                                        data-placeholder="Select an option">
-                                    <option value="{{null}}"></option>
-                                    @foreach($types as $type)
-                                        <option value="{{$type}}" {{old('type') == $type? "selected":""}}>{{$type}}</option>
-                                    @endforeach
-                                </select>
-                                @error('type') <b class="text-danger"><i
-                                            class="las la-exclamation-triangle"></i> {{$message}} </b> @enderror
-
-                            </div>
-                        </div>
-
                     </div>
 
                     <div id="product" class=" flex-row-fluid mb-2 @if(old('type') != 'Product')d-none @endif ">

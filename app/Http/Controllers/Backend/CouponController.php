@@ -45,10 +45,6 @@ class CouponController extends Controller
         $datatable_columns['placeholder'] = '';
         $datatable_columns['id'] = 'id';
         $datatable_columns['code'] = 'code';
-        $datatable_columns['type'] = 'type';
-        $datatable_columns['discount'] = 'discount';
-        $datatable_columns['discount_type'] = 'discount_type';
-        $datatable_columns['max_use'] = 'max_use';
         $datatable_columns['starts_at'] = 'starts_at';
         $datatable_columns['ends_at'] = 'ends_at';
         $datatable_columns['created_at'] = 'created_at';
@@ -156,7 +152,7 @@ class CouponController extends Controller
         return view('backend.coupon.create', compact('products', 'types', 'discount_types', 'code'));
     }
 
-    public function store(CreateRequest $request)
+    public function store(Request $request)
     {
         $coupon = new Coupon();
         $coupon->code = $request->code;
@@ -169,10 +165,12 @@ class CouponController extends Controller
             $coupon->products_ids = $request->products_ids;
             $coupon->minimum_shopping = '';
         }
+
+        $coupon->type ="Order";
         $coupon->discount = $request->discount;
-        $coupon->max_use = $request->max_use;
+        $coupon->max_use = 100;
         $coupon->per_user = $request->per_user;
-        $coupon->discount_type = $request->discount_type;
+        $coupon->discount_type = 'Amount';
         $coupon->starts_at = $request->start_date;
         $coupon->ends_at = $request->end_date;
         $coupon->status = $request->has('status') ? 1 : 0;
@@ -211,7 +209,7 @@ class CouponController extends Controller
             $coupon->products_ids = $request->products_ids;
             $coupon->minimum_shopping = '';
         }
-        $coupon->max_use = $request->max_use;
+        $coupon->max_use = 100;
         $coupon->per_user = $request->per_user;
         $coupon->starts_at = $request->start_date;
         $coupon->ends_at = $request->end_date;

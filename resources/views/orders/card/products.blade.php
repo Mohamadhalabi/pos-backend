@@ -98,12 +98,22 @@
 
                                         </tr>
                                     @endforeach
-        
+                                        <tr>
+                                            <td colspan="6"
+                                                class="fs-3 text-success text-end">Shipping</td>
+                                            <td class="text-success fs-3 fw-boldest text-end">{{$order->shipping}} TL</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="6"
+                                                class="fs-3 text-success text-end">Vat</td>
+                                            <td class="text-success fs-3 fw-boldest text-end">{{get_setting('vat')}} TL</td>
+                                        </tr>
                                     @if($order->coupon_value != 0)
                                         <tr>
                                             <td colspan="6"
                                                 class="fs-3 text-success text-end">{{__('backend.order.discount')}}</td>
-                                            <td class="text-success fs-3 fw-boldest text-end">{{exc_currency($order->coupon_value, $order->exchange_rate , $currency->symbol)}}</td>
+                                            <td class="text-success fs-3 fw-boldest text-end">{{$order->coupon_value}} TL</td>
                                         </tr>
                                     @endif
 

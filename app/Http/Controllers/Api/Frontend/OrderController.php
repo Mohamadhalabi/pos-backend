@@ -644,11 +644,12 @@ class OrderController extends Controller
     }
     function create_order(Request $request)
     {
-
         $order = new Order();
-    
+        
         // Generate a random UUID (6 characters long)
         $order->uuid = Str::random(6);
+    
+        $coupon = Coupon::where('code', $request->customer['coupon_code'])->first();
     
         // Set customer details
         $order->user_id = $request->customer['userId'];
@@ -656,51 +657,39 @@ class OrderController extends Controller
         $order->phone = $request->customer['phone'];
         $order->note = $request->customer['name'];
         $order->status = "processing";
-    
-        $products = $request->items;
-        $total = 0;
-        $orderDetails = "Order UUID: " . $order->uuid . "\n";
-    
-        foreach ($products as $product) {
-            // Assuming $product is an array
-            $prod = Product::where('sku', $product['code'])->first();
-        
-            if ($prod) {
-                if($prod->sale_price !=null){
-                    $total += $prod->sale_price * $product['quantity'];
-                }
-                else{
-                    $total += $prod->price * $product['quantity'];                   
-                }
-                $orderDetails .= "Product: " . $prod->title . ", Quantity: " . $product['quantity'] . "\n";
-            } else {
-                // Handle case where product is not found
-                // Maybe log an error or throw an exception
-            }
+        $order->shipping = $request->customer['shipping_cost'];
+        if($coupon == null){
+            $order->coupon_id = null;
+        } else {
+            $order->coupon_id = $coupon->id;
+            $order->coupon_value = $coupon->discount;
         }
         
-        $order->total = $total;
+        $products = $request->items;
+        $total = 0;
     
+        $order->total = $request->customer['total'];
         // Save the order
         $order->save();
+    
+        $orderDetails = ""; // Initialize order details string
     
         // Add records to OrdersProducts model
         foreach ($products as $product) {
             $prod = Product::where('sku', $product['code'])->first();
-            
             if ($prod) {
                 $orderProduct = new OrdersProducts();
                 $orderProduct->order_id = $order->id;
                 $orderProduct->product_id = $prod->id;
                 $orderProduct->quantity = $product['quantity'];
-                if($prod->sale_price == null || $prod->sale_price == 0 || $prod->sale_price == 0.00){
-                    $orderProduct->price = $prod->price; // Assuming price is fetched from the product
-                }
-                else{
-                    $orderProduct->price = $prod->sale_price; // Assuming price is fetched from the product
-                }
-                
+                $orderProduct->price = $product['price'];
                 $orderProduct->save();
+    
+                // Append product details to order summary
+                $orderDetails .= "Product: " . $prod->name . "\n" .
+                                "SKU: " . $product['code'] . "\n" .
+                                "Quantity: " . $product['quantity'] . "\n" .
+                                "Price: TL " . $product['price'] . "\n\n";
             }
         }
     
@@ -709,30 +698,35 @@ class OrderController extends Controller
         $customerName = $request->customer['name'];
         $customerAddress = $request->customer['address'];
         $customerPhone = $request->customer['phone'];
+        $shippingCost = $request->customer['shipping_cost'];
+        $vatCost = $request->customer['vat'];
+        $total = $request->customer['total'];
     
         // Construct the message
         $acceptLanguage = $request->header('Accept-Language');
         if ($acceptLanguage == "en") {
             $message = "Hello, my name is $customerName.\n" .
-            "Here are my order details:\n" .
-            $orderDetails .
-            "Shipping Address: $customerAddress\n" .
-            "Phone: $customerPhone\n" .
-            "Total: TL $total";
-        }
-        else if ($acceptLanguage == "ar") {
+                "Here are my order details:\n" .
+                $orderDetails .
+                "Shipping Address: $customerAddress\n" .
+                "Phone: $customerPhone\n" .
+                "Shipping: $shippingCost \n".
+                "VAT : $vatCost\n".
+                "Total: TL $total";
+        } else if ($acceptLanguage == "ar") {
             $message = "مرحباً، اسمي $customerName.\n" .
-            "إليكم تفاصيل طلبي:\n" .
-            $orderDetails .
-            "عنوان الشحن: $customerAddress\n" .
-            "الهاتف: $customerPhone\n" .
-            "المجموع: TL $total";
+                "إليكم تفاصيل طلبي:\n" .
+                $orderDetails .
+                "عنوان الشحن: $customerAddress\n" .
+                "الهاتف: $customerPhone\n" .
+                "الشحن: $shippingCost\n". 
+                "الضريبة : $vatCost\n".
+                "المجموع: TL $total";
         }
-        
     
         // URL encode the message
         $encodedMessage = urlencode($message);
-        
+    
         // Create WhatsApp link
         $whatsappLink = "https://wa.me/$contactNumber?text=$encodedMessage";
     
@@ -740,6 +734,7 @@ class OrderController extends Controller
             'whatsapp_link' => $whatsappLink,
         ]);
     }
+    
     function notify_me(Request $request)
     {
         $out_of_stock = new OutOfStock();
@@ -752,4 +747,70 @@ class OrderController extends Controller
 
         return response()->data(['success' => true]);
     }
+
+    function get_order_data(Request $request)
+    {
+        $orders = Order::where('user_id',$request->user_id)->whereNull('deleted_at')->get();
+    
+        $order_data = [];
+        foreach($orders as $order)
+        {
+            $order_data [] = [
+                'uuid' => $order->uuid,
+                'payment_status' => $order->payment_status,
+                'total' => $order->total,
+                'status' => $order->status,
+                'address' => $order->address,
+                'phone' => $order->phone,
+                'date' => $order->created_at,
+            ];
+        }
+
+            
+        return response()->json(['orders' => $order_data]);
+    }
+
+    function get_order_details(Request $request)
+    {
+        $orders = Order::where('uuid',$request->order_uuid)->first();
+
+        $order_details = OrdersProducts::where('order_id',$orders->id)->get();
+    
+        $order_data = [];
+        foreach($order_details as $order)
+        {
+            $product = Product::where('id',$order->product_id)->first();
+            $order_data [] = [
+                'uuid' => $orders->uuid,
+                'product_sku' => $product->sku,
+                'product_title' => $product->title,
+                'product_image' => media_file($product->image),
+                'quantity' => $order->quantity,
+                'price' => $order->price,
+            ];
+        }
+  
+        return response()->json(['orders' => $order_data]);
+    }
+
+    function apply_coupon(Request $request)
+    {
+        $coupon_data = [];
+        $coupon = Coupon::where('code', $request->coupon)->first();
+    
+        if ($coupon == null) {
+            return response()->json(['message' => 'not_available']);
+        } elseif ($coupon->ends_at > now()) {
+            $coupon_data[] = [
+                'code' => $coupon->code,
+                'discount' => $coupon->discount,
+            ];
+    
+            return response()->json(['coupon' => $coupon_data]);
+        } else {
+            return response()->json(['message' => 'not_available']);
+        }
+    }
+    
+
 }

@@ -303,4 +303,48 @@ class AuthController extends Controller
         return response()->error(trans('api.auth.user_not_found'));
     }
 
+    public function profile_update(Request $request, $id)
+    {
+        try {
+            // Retrieve the user by ID
+            $user = User::findOrFail($id); // This will throw a 404 if the user is not found
+    
+            // Update user information from the request body
+            $user->name = $request->input('name');
+            $user->email = $request->input('email');
+            $user->phone = $request->input('phone');
+            $user->address = $request->input('address');
+    
+            // Only update password if it's provided
+            if (!empty($request->input('password'))) {
+                $user->password = Hash::make($request->input('password')); // Hash the password
+            }
+    
+            // Save the updated user information
+            $user->save();
+
+            $user_info = User::where('id',$id)->first();
+
+            return response()->json([
+                'user' => [
+                    'id' => $user_info->id,
+                    'name' => $user_info->name,
+                    'email' => $user_info->email,
+                    'phone' => $user_info->phone, // Ensure phone exists in the User model
+                    'address' => $user_info->address,
+                ]
+            ], 200);
+        
+        } catch (ModelNotFoundException $e) {
+            // Return a 404 response if the user is not found
+            return response()->json(['error' => 'User not found'], 404);
+        } catch (ValidationException $e) {
+            // Return validation errors
+            return response()->json(['errors' => $e->validator->errors()], 422);
+        } catch (\Exception $e) {
+            // Return a generic error message for any other exceptions
+            return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
+        }
+    }    
+
 }

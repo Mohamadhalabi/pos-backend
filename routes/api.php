@@ -233,3 +233,11 @@ Route::get('/get-sub-categories',[\App\Http\Controllers\Api\Frontend\CategoryCon
 
 Route::post('/products-by-category/{id}', [\App\Http\Controllers\Api\Frontend\CategoryController::class, 'products_by_category'])->name('category.products');
 Route::get('/notify-me', [\App\Http\Controllers\Api\Frontend\OrderController::class, 'notify_me'])->name('notify.me');
+
+Route::post('/profile-update/{id}', [\App\Http\Controllers\Api\Frontend\User\Auth\AuthController::class, 'profile_update'])->name('profile.update');
+
+
+Route::get('/get-user-orders',[\App\Http\Controllers\Api\Frontend\OrderController::class, 'get_order_data'])->name('get_order_data');
+
+Route::get('/get-order-details',[\App\Http\Controllers\Api\Frontend\OrderController::class, 'get_order_details'])->name('get_order_details');
+Route::get('/apply-coupon',[\App\Http\Controllers\Api\Frontend\OrderController::class, 'apply_coupon'])->name('apply_coupon');
