@@ -17,7 +17,7 @@
             </div> -->
 
             <div class="row">
-                <div class="col-11">
+                <div class="col-12">
                     <div class="form-group">
                         <label for="main_attribute" class="form-label">{{trans('backend.product.attributes')}}</label>
                         <select data-control="select2" id="main_attribute" multiple class="form-control">.
@@ -34,14 +34,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-1">
-                    <div class="form-group">
-                        <button class="btn btn-icon    btn-sm mt-9 btn-dark" id="add_new_attributes" type="button"><i
-                                class="fa fa-plus"></i></button>
-                    </div>
-                </div>
             </div>
-            @include('backend.product.create.attribute.model_new_attribute')
 
             <div class="row" id="attribute_fileds">
 
@@ -58,7 +51,7 @@
                            <div class="col-11">
                                <div class="form-group">
                                    <label class="form-label" for="attr_{{$attribute->id}}">{{$attribute->name}}</label>
-                                   <select multiple data-control="select2" name="attribute[]" class="form-control"
+                                   <select data-control="select2" name="attribute[]" class="form-control"
                                            id="attr_{{$attribute->id}}">
                                        @foreach($attribute->sub_attributes  as $sub_attribute)
                                            @if( $sub_attribute->status == 1 )

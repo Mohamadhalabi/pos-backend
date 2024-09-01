@@ -46,7 +46,6 @@
                 @include('backend.product.create.attribute.checkbox')
 
                 @include('backend.product.create.media.defualt_image')
-                <!-- @include('backend.product.create.media.secondary_image') -->
                 @include('backend.product.create.media.gallery')
                 @include('backend.product.create.price.price')
             </div>

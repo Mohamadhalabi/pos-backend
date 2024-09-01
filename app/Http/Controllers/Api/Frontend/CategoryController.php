@@ -135,7 +135,7 @@ class CategoryController extends Controller
         }
     
         // Paginate the results
-        $products = $query->paginate(1);
+        $products = $query->paginate(12);
     
         $products_data = [];
     
@@ -203,19 +203,91 @@ class CategoryController extends Controller
     public function get_sub_categories(Request $request)
     {
         $categories = Category::where('status', 1)
-        ->whereNull('deleted_at')
-        ->where('parent_id', $request->sub_category)
-        ->get();
+            ->whereNull('deleted_at')
+            ->where('parent_id', $request->sub_category)
+            ->get();
+            
         $categories_data = [];
-        foreach($categories as $category){
-            $categories_data [] = [
+        $products_data = [];
+    
+        $products_query = Product::where('status', 1)
+            ->whereNull('deleted_at')
+            ->where('category_id', $request->sub_category);
+    
+        $data_product = $products_query->paginate(12);
+    
+        if ($data_product->isNotEmpty()) {
+            foreach ($data_product as $product) {
+                $cat = Category::where('id', $product->category_id)->first();
+        
+                // Handle the gallery images
+                $gallery = json_decode($product->gallery, true) ?? [];
+                if (empty($gallery)) {
+                    $gallery = [media_file($product->image)];
+                } else {
+                    $gallery = array_map('media_file', $gallery);
+                    array_unshift($gallery, media_file($product->image)); // Include the main image as the first item
+                }
+        
+                // Retrieve product attributes
+                $products_attribute = ProductsPackages::where('product_id', $product->id)->get();
+                $product_attrb = ProductsAttribute::where('product_id', $product->id)->pluck('sub_attribute_id');
+                $sub_attributes_id = SubAttribute::whereIn('id', $product_attrb)->where('attribute_id', 1)->first();
+    
+                // Check if $sub_attributes_id is not null
+                $attribute_data = [];
+                if ($sub_attributes_id) {
+                    foreach ($products_attribute as $sub_attribute) {
+                        $attribute_data[] = [
+                            'from' => $sub_attribute->from,
+                            'to' => $sub_attribute->to,
+                            'price' => $sub_attribute->price,
+                            'unit' => $sub_attributes_id->value,
+                        ];
+                    }
+                }
+        
+                // Prepare the product data
+                $products_data[] = [
+                    'id' => $product->id,
+                    'sku' => $product->sku,
+                    'name' => $product->title,
+                    'category' => $cat ? $cat->name : null,
+                    'price' => $product->price,
+                    'sale_price' => $product->sale_price,
+                    'image' => media_file($product->image),
+                    'gallery' => $gallery,
+                    'attributes' => $attribute_data,
+                    'description' => $product->description,
+                    'quantity' => $product->quantity,
+                ];
+            }
+        }
+    
+        foreach ($categories as $category) {
+            $categories_data[] = [
                 'id' => $category->id,
                 'name' => $category->name,
                 'slug' => $category->slug,
                 'icon' => media_file($category->icon),
-                'products_count' => Product::where('status',1)->whereNull('deleted_at')->where('category_id',$category->id)->count(),
+                'products_count' => Product::where('status', 1)
+                    ->whereNull('deleted_at')
+                    ->where('category_id', $category->id)
+                    ->count(),
             ];
         }
-        return response()->json($categories_data);
-    }
+    
+        return response()->json([
+            'category_data' => $categories_data,
+            'products' => $products_data,
+            'pagination' => [
+                'total' => $data_product->total(),
+                'per_page' => $data_product->perPage(),
+                'current_page' => $data_product->currentPage(),
+                'last_page' => $data_product->lastPage(),
+                'from' => $data_product->firstItem(),
+                'to' => $data_product->lastItem(),
+            ],
+        ]);
+    }    
 }

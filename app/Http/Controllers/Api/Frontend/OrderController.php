@@ -46,6 +46,9 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use stdClass;
+use App\Mail\OrderCreated;
+use Illuminate\Support\Facades\Mail;
+
 use function Symfony\Component\HttpFoundation\Session\Storage\Handler\read;
 
 class OrderController extends Controller
@@ -645,19 +648,34 @@ class OrderController extends Controller
     function create_order(Request $request)
     {
         $order = new Order();
+
+        do {
+            // Generate a UUID that starts with "MB" followed by 6 random numbers
+            $uuid = 'MB' . str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+        } while (Order::where('uuid', $uuid)->exists());
         
-        // Generate a random UUID (6 characters long)
-        $order->uuid = Str::random(6);
-    
+        $order->uuid = $uuid;
+            
         $coupon = Coupon::where('code', $request->customer['coupon_code'])->first();
     
+
+        $acceptLanguage = $request->header('Accept-Language');
+
         // Set customer details
         $order->user_id = $request->customer['userId'];
         $order->address = $request->customer['address'];
         $order->phone = $request->customer['phone'];
         $order->note = $request->customer['name'];
+        $order->shipment_description = $request->customer['address_details'];
         $order->status = "processing";
-        $order->shipping = $request->customer['shipping_cost'];
+        if($request->customer['shipping_cost'] == null){
+            $shippingCost = 0;
+            $order->shipping = 0;  
+        }
+        else{
+            $shippingCost = $request->customer['shipping_cost'];
+            $order->shipping = $request->customer['shipping_cost'];
+        }
         if($coupon == null){
             $order->coupon_id = null;
         } else {
@@ -684,12 +702,21 @@ class OrderController extends Controller
                 $orderProduct->quantity = $product['quantity'];
                 $orderProduct->price = $product['price'];
                 $orderProduct->save();
-    
+
+                if($acceptLanguage == "en"){
+                    $orderDetails .= "Product: " . $prod->name . "\n" .
+                    "SKU: " . $product['code'] . "\n" .
+                    "Quantity: " . $product['quantity'] . "\n" .
+                    "Price: " . $product['price'] . "\n\n";
+                }
                 // Append product details to order summary
-                $orderDetails .= "Product: " . $prod->name . "\n" .
-                                "SKU: " . $product['code'] . "\n" .
-                                "Quantity: " . $product['quantity'] . "\n" .
-                                "Price: TL " . $product['price'] . "\n\n";
+
+                elseif ($acceptLanguage == "ar"){
+                    $orderDetails .= "المنتج " . $prod->name . "\n" .
+                    "رمز المنتج: " . $product['code'] . "\n" .
+                    "الكمية: " . $product['quantity'] . "\n" .
+                    "السعر : " . $product['price'] . "\n\n";
+                }
             }
         }
     
@@ -698,31 +725,41 @@ class OrderController extends Controller
         $customerName = $request->customer['name'];
         $customerAddress = $request->customer['address'];
         $customerPhone = $request->customer['phone'];
-        $shippingCost = $request->customer['shipping_cost'];
+        $customer_address_details = $request->customer['address_details'];
         $vatCost = $request->customer['vat'];
         $total = $request->customer['total'];
     
         // Construct the message
-        $acceptLanguage = $request->header('Accept-Language');
         if ($acceptLanguage == "en") {
             $message = "Hello, my name is $customerName.\n" .
-                "Here are my order details:\n" .
-                $orderDetails .
-                "Shipping Address: $customerAddress\n" .
-                "Phone: $customerPhone\n" .
-                "Shipping: $shippingCost \n".
-                "VAT : $vatCost\n".
-                "Total: TL $total";
+                       "Here are my order details:\n" . $uuid . "\n" .
+                       $orderDetails .
+                       "Shipping Address: $customerAddress\n\n$customer_address_details\n" .
+                       "Phone: $customerPhone\n";
+            
+            if ($shippingCost != 0) {
+                $message .= "Shipping: $shippingCost\n";
+            }
+            
+            $message .= "VAT: $vatCost\n" .
+                        "Total: TL $total";
         } else if ($acceptLanguage == "ar") {
             $message = "مرحباً، اسمي $customerName.\n" .
-                "إليكم تفاصيل طلبي:\n" .
-                $orderDetails .
-                "عنوان الشحن: $customerAddress\n" .
-                "الهاتف: $customerPhone\n" .
-                "الشحن: $shippingCost\n". 
-                "الضريبة : $vatCost\n".
-                "المجموع: TL $total";
+                       "إليكم تفاصيل طلبي:\n" . $uuid . "\n" .
+                       $orderDetails .
+                       "عنوان التوصيل: $customerAddress\n\n$customer_address_details\n" .
+                       "الهاتف: $customerPhone\n";
+            
+            if ($shippingCost != 0) {
+                $message .= "تكلفة التوصيل: $shippingCost\n";
+            }
+            
+            $message .= "الضريبة: $vatCost\n" .
+                        "المجموع: TL $total";
         }
+        
+        
+        
     
         // URL encode the message
         $encodedMessage = urlencode($message);
@@ -730,6 +767,17 @@ class OrderController extends Controller
         // Create WhatsApp link
         $whatsappLink = "https://wa.me/$contactNumber?text=$encodedMessage";
     
+        $user = User::where('id',$request->customer['userId'])->first();
+        if($user !=null){
+            if($user->email != null){
+                Mail::to($user->email)->send(new OrderCreated($order, $whatsappLink));            
+            }
+
+            $user->state = $customer_address_details;
+            $user->save();
+        }
+
+
         return response()->json([
             'whatsapp_link' => $whatsappLink,
         ]);

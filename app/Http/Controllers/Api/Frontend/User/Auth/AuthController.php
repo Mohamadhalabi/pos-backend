@@ -30,38 +30,46 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|string|email',
+            'identifier' => 'required|string', // Use a single field for both email and phone
             'password' => 'required|string',
         ]);
     
-        if (!auth()->attempt($request->only('email', 'password'))) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+        // Attempt to find the user by email or phone number
+        $user = \App\Models\User::where('email', $request->identifier)
+                    ->orWhere('phone', $request->identifier)
+                    ->first();
+    
+        // If the user exists, check the password
+        if ($user && auth()->attempt(['email' => $user->email, 'password' => $request->password])) {
+            // If login is successful, create a token
+            $token = $user->createToken('auth_token')->plainTextToken;
+    
+            // Include user information in the response
+            return response()->json([
+                'token' => $token,
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'phone' => $user->phone,
+                    'address' => $user->address,
+                    'details' => $user->state,
+                ]
+            ]);
         }
     
-        $user = auth()->user();
-        $token = $user->createToken('auth_token')->plainTextToken;
-    
-        // Include user information in the response
-        return response()->json([
-            'token' => $token,
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'phone' => $user->phone, // Ensure phone exists in the User model
-                'address' => $user->address,
-            ]
-        ]);
-    }    
+        return response()->json(['message' => 'Invalid credentials'], 401);
+    }
+      
 
     public function register(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            // 'email' => 'string|email|max:255|unique:users',
             'password' => 'required|string|min:4',
             'address' => 'required|string|min:5',
-            'phone' => 'required',
+            'phone' => 'required|unique:users',
         ]);
 
         $user = User::create([

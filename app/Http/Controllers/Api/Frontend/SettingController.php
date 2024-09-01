@@ -50,6 +50,7 @@ class SettingController extends Controller
         $vat_cost = Setting::where('type','vat')->first();
         $longitude = Setting::where('type','longitude')->first();
         $latitude = Setting::where('type','latitude')->first();
+        $free_shipping = Setting::where('type','free_shipping')->first();
 
         $website_setting = [
             'system_name' => $system_name
@@ -73,6 +74,7 @@ class SettingController extends Controller
             'vat_cost' => $vat_cost->value,
             'longitude' => $longitude->value,
             'latitude' => $latitude->value,
+            'free_shipping' => $free_shipping->value,
         ]);
     }
 

@@ -45,7 +45,7 @@ class AttributeController extends Controller
         $switch_script = $this->status_switch_script($switch_route, $switch_class);
         $create_button = '';
         if (permission_can('create attribute', 'admin')) {
-            $create_button = $this->create_button(route('backend.attributes.create'), trans('backend.attribute.create_new_attribute'));
+            $create_button = $this->create_button('attributes/1/sub-attributes/create', trans('backend.attribute.sub_attributes_for'));
         }
         return view('backend.attribute.index', compact('datatable_script', 'switch_script', 'create_button'));
 
@@ -87,9 +87,9 @@ class AttributeController extends Controller
                 if (permission_can('edit attribute', 'admin')) {
                     $actions .= $this->edit_button(route('backend.attributes.edit', ['attribute' => $q->id]));
                 }
-                if (permission_can('delete attribute', 'admin')) {
-                    $actions .= $this->delete_button(route('backend.attributes.destroy', ['attribute' => $q->id]), $q->name);
-                }
+                // if (permission_can('delete attribute', 'admin')) {
+                //     $actions .= $this->delete_button(route('backend.attributes.destroy', ['attribute' => $q->id]), $q->name);
+                // }
                 if (permission_can('show sub attributes', 'admin')) {
                     $actions .= $this->btn(route('backend.attributes.sub-attributes.index', ['attribute_id' => $q->id]), trans('backend.attribute.sub_attributes_page'), 'fa fa-cong', 'btn-info', ['attribute' => $q->id]);
                 }

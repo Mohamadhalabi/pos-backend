@@ -44,21 +44,14 @@
                 <div class="col-12 col-lg-8 col-md-8">
                     @include('backend.product.edit.information.name_and_description')
                     @include('backend.product.edit.attribute.values')
-                    <!-- @include('backend.product.edit.attribute.brand') -->
                     @include('backend.product.edit.price.price_renge')
-                    <!-- @include('backend.product.edit.media.videos') -->
-                    <!-- @include('backend.product.edit.media.pdf') -->
                 </div>
                 <div class="col-12 col-lg-3 col-md-3">
                     @include('backend.product.edit.information.more_information')
                     @include('backend.product.edit.attribute.checkbox')
                     @include('backend.product.edit.media.defualt_image')
-                    <!-- @include('backend.product.edit.media.secondary_image') -->
                     @include('backend.product.edit.media.gallery')
-                    <!-- @include('backend.product.edit.media.twitter_image') -->
                     @include('backend.product.edit.price.price')
-                    <!-- @include('backend.product.edit.accessories_and_bundles.accessories') -->
-                    <!-- @include('backend.product.edit.accessories_and_bundles.bundles') -->
                 </div>
             </div>
         </div>

@@ -38,64 +38,18 @@
 
             <div class="col-12 col-md-12 mt-2">
                 <label for="category" class="required form-label">{{trans('backend.product.category')}}</label>
-                <select data-control="select2" class="form-control" required id="category" name="category" data-placeholder="{{trans('backend.menu.select_category')}}">
-
-                @foreach($categories as $category)
-                                    @if($category->parent_id != NULL)
-                                        <option value="{{$category->id}}">{{$category->name}}</option>
-                                    @endif
-                @endforeach
-
-            </select>
-                <b class="text-danger" id="error_category"> @error('category') <i
-                        class="fa fa-exclamation-triangle"></i> {{$message}} @enderror</b>
+                <select data-control="select2" class="form-control" required id="category" name="category[]" data-placeholder="Select Category">
+                    {!! \App\Models\Category::select2(old('category', []), 0, 0) !!}
+                </select>
+                <b class="text-danger" id="error_category"> @error('category') <i class="fa fa-exclamation-triangle"></i> {{$message}} @enderror</b>
             </div>
+
             <div class="col-12 col-md-12 mt-2">
                 <div class="form-group">
                     <label >{{trans('backend.product.quantity')}}</label>
                     <input type="number" name="quantity" id="quantity"  class="form-control" value="0">
                 </div>
             </div>       
-            <!-- <div class="col-12 col-md-12  mt-2 ">
-                <div class="form-group">
-                    <label for="weight" class="form-label">{{trans('backend.product.weight')}}</label>
-                    <input type="number" class="form-control" id="weight" name="weight"
-                             value="{{old('weight')}}">
-                    <b class="text-danger" id="error_weight"> @error('weight')<i class="fa fa-exclamation-triangle"></i> {{$message}}@enderror
-                    </b>
-                </div>
-            </div> -->
-            <!-- <div class="col-12 col-md-12  mt-2">
-                <label for="priority" class="required form-label">{{trans('backend.product.priority')}}</label>
-                <input type="number"   min="1" value="1" class="form-control" required id="priority" name="priority">
-                <b class="text-danger" id="error_priority">     @error('priority')
-                    <i class="fa fa-exclamation-triangle"></i> {{$message}} @enderror</b>
-            </div> -->
-
-            <!-- <div class="col-12 col-md-12  mt-2">
-                <label for="colors" class="form-label">{{trans('backend.product.colors')}}</label>
-                <select class="form-control" id="color" name="color">
-                    <option @if(old('colors' ) == "") selected @endif value="">{{trans('backend.global.not_found')}}</option>
-                    @foreach($colors as $item)
-                        <option data-color="{{$item->code}}" @if($item->id ==  old('color',[] ) ) selected
-                                @endif  value="{{$item->id}}">   {{$item->name}}</option>
-                    @endforeach
-                </select>
-                <b class="text-danger" id="error_color">  @error('color')<i class="fa fa-exclamation-triangle"></i> {{$message}}@enderror</b>
-            </div> -->
-
-
-            <!-- <div class="col-12 col-md-12  mt-2">
-                <label for="blocked_countries" class="form-label">{{trans('backend.product.blocked_countries')}}</label>
-                <select class="form-control select2" multiple id="blocked_countries" name="blocked_countries[]" data-controls="select">
-                    <option @if(old('blocked_countries' ) == "")  @endif value="">{{trans('backend.global.select_an_option')}}</option>
-                    @foreach($countries as $country)
-                        <option data-code="{{$country->code}}" @if(in_array($country->id ,  old('blocked_countries',[] )) ) selected
-                                @endif  value="{{$country->id}}">   {{$country->name}}</option>
-                    @endforeach
-                </select>
-                <b class="text-danger" id="error_blocked_countries">  @error('blocked_countries')<i class="fa fa-exclamation-triangle"></i> {{$message}}@enderror</b>
-            </div> -->
         </div>
     </div>
 </div>
