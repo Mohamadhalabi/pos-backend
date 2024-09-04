@@ -870,90 +870,32 @@ class ProductController extends Controller
         $product = new Product();
         $title = [];
         $description = [];
-        // $summary_name = [];
-        // $title_meta = [];
-        // $description_meta = [];
-        // $faq = [];
         $languages = get_languages();
         foreach ($languages as $language) {
             $title [$language->code] = $request->has('title_' . $language->code) && !empty($request->get('title_' . $language->code)) ? $request->get('title_' . $language->code) : $request->get('title_' . $languages[0]->code);
-            // $short_title [$language->code] = $request->has('short_title_' . $language->code) && !empty($request->get('short_title_' . $language->code)) ? $request->get('short_title_' . $language->code) : $request->get('short_title_' . $languages[0]->code);
             $description [$language->code] = $request->has('description_' . $language->code) && !empty($request->get('description_' . $language->code)) ? $request->get('description_' . $language->code) : $request->get('description_' . $languages[0]->code);
-            // $summary_name [$language->code] = $request->has('summary_name_' . $language->code) && !empty($request->get('summary_name_' . $language->code)) ? $request->get('summary_name_' . $language->code) : $request->get('summary_name_' . $languages[0]->code);
-            // $title_meta [$language->code] = $request->has('meta_title_' . $language->code) && !empty($request->get('meta_title_' . $language->code)) ? $request->get('meta_title_' . $language->code) : $request->get('meta_title_' . $languages[0]->code);
-            // $description_meta[$language->code] = $request->has('meta_description_' . $language->code) && !empty($request->get('meta_description_' . $language->code)) ? $request->get('meta_description_' . $language->code) : $request->get('meta_description_' . $languages[0]->code);
-            // $faq[$language->code] = $request->has('faq_' . $language->code) ? $request->get('faq_' . $language->code) : $request->get('faq_' . $languages[0]->code);
         }
         $product->slug = $request->sku;
         $product->sku = $request->sku;
-        // $product->priority = $request->priority;
-        $product->category_id = $request->category;
+        $product->category_id = $request->category[0];
         $product->image = $request->image;
-        // $product->twitter_image = $request->has('twitter_image') ? $request->twitter_image : "";
-        // $product->secondary_image = $request->has('secondary_image') ? $request->secondary_image : "";
         $product->gallery = $request->has('gallery') ? $request->gallery : null;
-        // $product->pdf = $request->has('pdf') ? $request->pdf : null;
 
-        // $product->blocked_countries = $request->blocked_countries;
 
-        #region videos
+        
         $videos = [];
-        // if ($request->has('video_url') && !empty($request->video_url)) {
-        //     foreach ($request->video_url as $key => $item) {
-        //         $videos[] = ['link' => $item];
-        //     }
-        // }
-        // $product->videos = json_encode($videos);
-        #endregion
-        // $product->weight = $request->weight;
+
 
         $product->price = $request->price;
         $product->sale_price = $request->has('sale_price') && !empty($request->sale_price) ? $request->sale_price : null;
 
         $product->quantity = $request->quantity;
-        // $product->discount_type = $request->discount_type;
-        // $product->discount_value = ((empty($request->discount_value)) ? 0 : $request->discount_value);
-        // if ($request->date_type == 'for_ever') {
-            // $product->end_date_discount = null;
-            // $product->start_date_discount = date('Y-m-d', time());
 
-        // } else {
-        //     $product->end_date_discount = ((empty($request->discount_range_end)) ? null : date('Y-m-d', strtotime($request->discount_range_end)));
-        //     $product->start_date_discount = ((empty($request->discount_range_start)) ? null : date('Y-m-d', strtotime($request->discount_range_start)));
-        // }
         $product->title = $title;
-        // $product->short_title = $short_title;
-        // $product->color_id = $request->has('color') ? $request->color : null;
-
-
-        // $product->summary_name = $summary_name;
         $product->description = $description;
-        // $product->meta_title = $title_meta;
-        // $product->meta_description = $description_meta;
-        // $product->faq = $faq;
-        // $product->meta_image = $request->meta_image;
 
-        #region bundles
-        // if ($request->has('bundles') && !empty($request->bundles)) {
-        //     $product->bundled = json_encode($request->bundles);
-        //     $product->is_bundle = true;
-        // } else {
-        //     $product->bundled = json_encode([]);
-        //     $product->is_bundle = false;
-        // }
-
-        #endregion
-
-        #region Accessories
-        // $product->accessories = json_encode($request->has('accessories') && !empty($request->accessories) ? $request->accessories : []);
-        #endregion
         $product->status = $request->has('status') && $request->status == 1;
-        // $product->is_best_seller = $request->has('is_best_seller') && $request->is_best_seller == 1;
-        // $product->hide_price = $request->has('hide_price') && $request->hide_price == 1;
-        // $product->is_super_sales = $request->has('discount_value') && $request->discount_value != "";
-        // $product->is_saudi_branch = $request->has('is_saudi_branch') && $request->is_saudi_branch == 1;
-        // $product->is_featured = $request->has('is_featured') && $request->is_featured == 1;
-        // $product->is_free_shipping = $request->has('is_free_shipping') && $request->is_free_shipping == 1;
+
         $product->save();
 
 

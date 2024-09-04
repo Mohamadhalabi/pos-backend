@@ -55,7 +55,9 @@ class Product extends Model
         'status',
         'years'];
     protected $casts = [
-        'blocked_countries' => 'array'
+        'blocked_countries' => 'array',
+        'title' => 'json',
+        'description' => 'json',
     ];
 
 

@@ -702,23 +702,26 @@ class OrderController extends Controller
                 $orderProduct->quantity = $product['quantity'];
                 $orderProduct->price = $product['price'];
                 $orderProduct->save();
-
-                if($acceptLanguage == "en"){
+        
+                // Decrease the product's quantity in the database
+                $prod->quantity -= $product['quantity'];
+                $prod->save();
+        
+                // Generate the order details summary
+                if ($acceptLanguage == "en") {
                     $orderDetails .= "Product: " . $prod->name . "\n" .
                     "SKU: " . $product['code'] . "\n" .
                     "Quantity: " . $product['quantity'] . "\n" .
                     "Price: " . $product['price'] . "\n\n";
-                }
-                // Append product details to order summary
-
-                elseif ($acceptLanguage == "ar"){
-                    $orderDetails .= "المنتج " . $prod->name . "\n" .
+                } elseif ($acceptLanguage == "ar") {
+                    $orderDetails .= "المنتج: " . $prod->name . "\n" .
                     "رمز المنتج: " . $product['code'] . "\n" .
                     "الكمية: " . $product['quantity'] . "\n" .
-                    "السعر : " . $product['price'] . "\n\n";
+                    "السعر: " . $product['price'] . "\n\n";
                 }
             }
         }
+        
     
         // Prepare WhatsApp link
         $contactNumber = get_setting('contact_whatsapp'); // Retrieve the contact number
@@ -786,15 +789,19 @@ class OrderController extends Controller
     function notify_me(Request $request)
     {
         $out_of_stock = new OutOfStock();
-
-        $product = Product::where('sku',$request->sku)->first();
-
+    
+        $product = Product::where('sku', $request->sku)->first();
+    
         $out_of_stock->product_id = $product->id;
-        $out_of_stock->email = $request->email;
+    
+        // Use the phone if email is null
+        $out_of_stock->email = $request->email ?? $request->phone;
+    
         $out_of_stock->save();
-
-        return response()->data(['success' => true]);
+    
+        return response()->json(['success' => true]);
     }
+    
 
     function get_order_data(Request $request)
     {
