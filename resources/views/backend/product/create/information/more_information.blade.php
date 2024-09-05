@@ -1,7 +1,7 @@
 <div class="card card-flush">
     <div class="card-header">
         <div class="card-title">
-            <h2>General</h2>
+            <h2>{{trans('backend.product.general')}}</h2>
         </div>
     </div>
     <div class="card-body">

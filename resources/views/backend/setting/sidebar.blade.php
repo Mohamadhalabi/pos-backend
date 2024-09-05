@@ -50,7 +50,7 @@
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
-                        <span class="menu-title">Whatsapp number</span>
+                        <span class="menu-title">{{trans('backend.setting.social.social_whatsapp')}}</span>
                     </a>
                 </div>
             @endif

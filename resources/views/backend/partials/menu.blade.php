@@ -22,7 +22,7 @@
             <!-- order will be added  -->
              <!-- offer will be added  -->
             <div class="menu-item">
-                <h4 class="menu-content text-muted mb-0 fs-7 text-uppercase">General</h4>
+                <h4 class="menu-content text-muted mb-0 fs-7 text-uppercase">{{trans('backend.product.general')}}</h4>
             </div>
             @include('backend.order.sidebar')
 

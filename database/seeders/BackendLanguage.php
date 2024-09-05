@@ -617,6 +617,11 @@ class BackendLanguage extends Seeder
 
         #region setting
         $setting_en = array(
+            array('status' => '0', 'locale' => 'en', 'group' => 'backend', 'key' => 'setting.shipping_price', 'value' => 'Shipping Price'),
+            array('status' => '0', 'locale' => 'en', 'group' => 'backend', 'key' => 'setting.free_shipping', 'value' => 'Free Shipping'),
+            array('status' => '0', 'locale' => 'en', 'group' => 'backend', 'key' => 'setting.vat', 'value' => 'Vat'),
+            array('status' => '0', 'locale' => 'en', 'group' => 'backend', 'key' => 'setting.longitude', 'value' => 'Longitude'),
+            array('status' => '0', 'locale' => 'en', 'group' => 'backend', 'key' => 'setting.latitude', 'value' => 'Latitude'),
             array('status' => '0', 'locale' => 'en', 'group' => 'backend', 'key' => 'setting.watermark', 'value' => 'watermark'),
             array('status' => '0', 'locale' => 'en', 'group' => 'backend', 'key' => 'setting.watermark_status', 'value' => 'watermark status'),
             array('status' => '0', 'locale' => 'en', 'group' => 'backend', 'key' => 'setting.watermark_opacity', 'value' => 'watermark opacity'),
@@ -761,6 +766,11 @@ class BackendLanguage extends Seeder
 
         );
         $setting_ar = array(
+            array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'setting.shipping_price', 'value' => 'Shipping Price'),
+            array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'setting.free_shipping', 'value' => 'Free Shipping'),
+            array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'setting.vat', 'value' => 'Vat'),
+            array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'setting.longitude', 'value' => 'Longitude'),
+            array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'setting.latitude', 'value' => 'Latitude'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'setting.watermark', 'value' => 'watermark'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'setting.watermark_status', 'value' => 'watermark status'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'setting.watermark_opacity', 'value' => 'watermark opacity'),
@@ -792,7 +802,7 @@ class BackendLanguage extends Seeder
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'setting.social.social_telegram', 'value' => 'Telegram'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'setting.social.social_tiktok', 'value' => 'Tiktok'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'setting.social.social_twitter', 'value' => 'Twitter'),
-            array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'setting.social.social_whatsapp', 'value' => 'Whatsapp'),
+            array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'setting.social.social_whatsapp', 'value' => 'واتساب'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'setting.system_logo_black', 'value' => 'شعار السمة المعتمة'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'setting.system_logo_icon', 'value' => 'أيقونة النظام'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'setting.system_logo_white', 'value' => 'شعار السمة المضيئة'),
@@ -990,7 +1000,11 @@ class BackendLanguage extends Seeder
 
         #region products
         $product_en = array(
+            array('status' => '0', 'locale' => 'en', 'group' => 'backend', 'key' => 'product.requestBy', 'value' => 'Requested by'),
+            array('status' => '0', 'locale' => 'en', 'group' => 'backend', 'key' => 'product.requestDate', 'value' => 'Date of request'),
+            array('status' => '0', 'locale' => 'en', 'group' => 'backend', 'key' => 'product.general', 'value' => 'General'),
             array('status' => '0', 'locale' => 'en', 'group' => 'backend', 'key' => 'product.title', 'value' => 'title'),
+            array('status' => '0', 'locale' => 'en', 'group' => 'backend', 'key' => 'product.offer', 'value' => 'Offer'),
             array('status' => '0', 'locale' => 'en', 'group' => 'backend', 'key' => 'product.summary_name', 'value' => 'summary name'),
             array('status' => '0', 'locale' => 'en', 'group' => 'backend', 'key' => 'product.slug', 'value' => 'slug'),
             array('status' => '0', 'locale' => 'en', 'group' => 'backend', 'key' => 'product.category', 'value' => 'category'),
@@ -1136,10 +1150,12 @@ class BackendLanguage extends Seeder
 
         );
         $product_ar = array(
+            array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.offer', 'value' => 'عرض على المنتج'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.title', 'value' => 'عنوان'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.summary_name', 'value' => 'ملخص الاسم'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.slug', 'value' => 'slug'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.category', 'value' => 'الفئة'),
+            array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.general', 'value' => 'معلومات عامة'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.min_purchase_qty', 'value' => 'اقل كمية للشراء'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.description', 'value' => 'الوصف'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.priority', 'value' => 'الأولوية'),
@@ -1155,7 +1171,7 @@ class BackendLanguage extends Seeder
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.percent', 'value' => 'مئوي'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.none', 'value' => 'لايوجد'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.discount_value', 'value' => 'قيمة الخصم'),
-            array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.sku', 'value' => 'SKU'),
+            array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.sku', 'value' => 'الرمز'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.quantity', 'value' => 'الكمية'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.stock_visibility', 'value' => 'هل متاح في المستودع'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.meta_title', 'value' => 'meta title'),
@@ -1199,6 +1215,8 @@ class BackendLanguage extends Seeder
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.serial_number', 'value' => 'رقم تسلسلي'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.add_new_serial_number', 'value' => 'اضافة رقم تسلسلي'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.discounts_and_offers', 'value' => 'عروض والحسومات'),
+            array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.requestBy', 'value' => 'طلب من قبل'),
+            array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.requestDate', 'value' => 'تاريخ الطلب'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.step1', 'value' => 'الخطوة 1'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.information', 'value' => 'المعلومات'),
             array('status' => '0', 'locale' => 'ar', 'group' => 'backend', 'key' => 'product.step2', 'value' => 'الخطوة 2'),

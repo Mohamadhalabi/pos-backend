@@ -2,7 +2,7 @@
     <div class="card card-flush mt-3">
         <div class="card-header">
             <div class="card-title">
-                <h2>Offer</h2>
+            {{trans('backend.product.discounts_and_offers')}}
             </div>
         </div>
         <div class="card-body">
