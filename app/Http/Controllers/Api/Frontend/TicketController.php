@@ -8,9 +8,13 @@ use App\Http\Requests\Api\User\User\ProfileRequest;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Ticket;
+use App\Models\User;
+use App\Models\Setting;
 use App\Traits\SerializeDateTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ComplainsMail;
 
 class TicketController extends Controller
 {
@@ -124,6 +128,27 @@ class TicketController extends Controller
         ];
 
         return response()->api_data(['ticket' => $result]);
+    }
+
+    public function ticket_submit($id, Request $request)
+    {
+        $fromEmail = Setting::where('type','mail_from_address')->first();
+
+        $name = User::where('id',$id)->first();
+
+        $nameEmail = $name->name;
+        
+
+        $to = $fromEmail->value; 
+        $subject = $request->title;
+        $message = "شكوى جديدة من :" .$nameEmail. " " .$request->message;
+    
+        Mail::raw($message, function ($mail) use ($to, $subject) {
+            $mail->to($to)
+                ->subject($subject);
+        });
+        
+        return response()->json(['sent' => true]);
     }
 
 

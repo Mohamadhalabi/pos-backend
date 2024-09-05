@@ -241,3 +241,5 @@ Route::get('/get-user-orders',[\App\Http\Controllers\Api\Frontend\OrderControlle
 
 Route::get('/get-order-details',[\App\Http\Controllers\Api\Frontend\OrderController::class, 'get_order_details'])->name('get_order_details');
 Route::get('/apply-coupon',[\App\Http\Controllers\Api\Frontend\OrderController::class, 'apply_coupon'])->name('apply_coupon');
+
+Route::post('/complains-submit/{id}', [\App\Http\Controllers\Api\Frontend\TicketController::class, 'ticket_submit'])->name('ticket_submit');
