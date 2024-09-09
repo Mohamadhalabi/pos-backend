@@ -95,6 +95,11 @@ if (!function_exists('single_image')) {
             $height = 400;
         }
 
+        if($name =="gallery"){
+            $width =500;
+            $height = 500;
+        }
+
         else{
             $height = 200;
             $width = 200;
