@@ -702,11 +702,7 @@ class OrderController extends Controller
                 $orderProduct->quantity = $product['quantity'];
                 $orderProduct->price = $product['price'];
                 $orderProduct->save();
-        
-                // Decrease the product's quantity in the database
-                $prod->quantity -= $product['quantity'];
-                $prod->save();
-        
+                
                 // Generate the order details summary
                 if ($acceptLanguage == "en") {
                     $orderDetails .= "Product: " . $prod->name . "\n" .

@@ -430,6 +430,21 @@ class OrderController extends Controller
 
         $order = Order::query()->where('uuid', $id)->first();
 
+        $order_products = OrdersProducts::query()->where('order_id', $order->id)->get();
+
+        foreach($order_products as $order_product)
+        {
+            
+        }
+
+        $products = Product::whereIn('id',$order_products)->get();
+
+        foreach($products as $prod){
+
+        }
+
+
+
 
         if (empty($order)) {
             return abort(404);
