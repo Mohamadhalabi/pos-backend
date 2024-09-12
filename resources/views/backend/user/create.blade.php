@@ -65,61 +65,17 @@
 
                         </div>
 
-                        <div class="col-12 col-md-6">
-                            <div class="  mb-10">
-                                <label for="postal_code"
-                                       class="form-label  ">{{trans('backend.user.postal_code')}}</label>
-                                <input   autocomplete="off" type="text" class="form-control" id="postal_code"
-                                       name="postal_code" value="{{old('postal_code')}}"
-                                       placeholder="{{trans('backend.user.postal_code')}}"/>
-                                @error('postal_code') <b class="text-danger"><i
-                                            class="las la-exclamation-triangle"></i> {{$message}} </b> @enderror
-
-                            </div>
-                        </div>
                     </div>
 
-                    <div class="row mb-10">
-                        <div class="col-12 col-md-6">
-                            <div class="form-group">
-                                <label for="country"
-                                       class="form-label">{{trans('backend.city.country_name')}}</label>
-                                <select class="form-control" id="country" name="country" data-control="select2"
-                                        data-placeholder="Select an option">
-                                    <option selected value="{{null}}"></option>
-                                    @foreach($countries as $country)
-                                        <option value="{{$country->id}}">{{$country->name}}</option>
-                                    @endforeach
-                                </select>
-                                @error('country') <b class="text-danger"><i
-                                            class="las la-exclamation-triangle"></i> {{$message}} </b> @enderror
-
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-md-6">
-                            <div class=" ">
-                                <label for="state"
-                                       class="form-label  ">{{trans('backend.user.state')}}</label>
-                                <input   autocomplete="off" type="text" class="form-control" id="state"
-                                       name="state" value="{{old('state')}}"
-                                       placeholder="{{trans('backend.user.state')}}"/>
-                                @error('state') <b class="text-danger"><i
-                                            class="las la-exclamation-triangle"></i> {{$message}} </b> @enderror
-
-                            </div>
-                        </div>
-
-                    </div>
                     <div class="row mb-6">
 
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-12">
                             <div class="form-group">
-                                <label for="city"
-                                       class="form-label">{{trans('backend.user.city')}}</label>
-                                <input type="text" class="form-control  " name="city"  value="{{old('city')}}" id="city">
-                                <b class="text-danger" id="city_error"> </b>
-                                @error('city') <b class="text-danger"><i
+                                <label for="address"
+                                       class="form-label">{{trans('backend.user.address')}}</label>
+                                <input type="text" class="form-control  " name="address"  value="{{old('address')}}" id="address">
+                                <b class="text-danger" id="address_error"> </b>
+                                @error('address') <b class="text-danger"><i
                                             class="las la-exclamation-triangle"></i> {{$message}} </b> @enderror
 
                             </div>
@@ -156,40 +112,6 @@
                         </div>
                     </div>
                     <div class="row mb-6">
-                        <div class="col-12 col-sm-6  ">
-                            <div class="form-group ">
-
-                                <label class=" form-label fw-bold m-4   mx-auto">{{trans('backend.profile.avatar')}}</label>
-
-                                <div class=" mx-auto">
-                                    <div class="image-input image-input-outline image-input-empty"
-                                         data-kt-image-input="true"
-                                         style="background-image: url({{ old('avatar',asset('backend/media/avatars/blank.png'))}})">
-                                        <div class="image-input-wrapper text-center z-index-3 w-125px h-125px p-5"
-                                             style="background-image: none">
-                                        </div>
-                                        <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow "
-                                               data-kt-image-input-action="change" data-bs-toggle="tooltip" title=""
-                                               data-bs-original-title="Change avatar">
-                                            <i class="bi bi-pencil-fill fs-7"></i>
-                                            <input type="file" name="avatar" value="{{old('avatar')}}"
-                                                   accept=".png, .jpg, .jpeg">
-                                            <input type="hidden" name="avatar_remove">
-                                        </label>
-                                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                              data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title=""
-                                              data-bs-original-title="Cancel avatar">
-																<i class="bi bi-x fs-2"></i>
-															</span>
-                                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                              data-kt-image-input-action="remove" data-bs-toggle="tooltip" title=""
-                                              data-bs-original-title="Remove avatar">
-																<i class="bi bi-x fs-2"></i>
-															</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-12 col-sm-6  align-items-center">
                             <div class="form-group  align-items-center">
                                 <br>

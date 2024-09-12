@@ -727,14 +727,17 @@ class OrderController extends Controller
         $customer_address_details = $request->customer['address_details'];
         $vatCost = $request->customer['vat'];
         $total = $request->customer['total'];
-    
+
+        $customer_address_link = "https://maps.google.com/?q={$request->customer['lat']},{$request->customer['long']}";
+
         // Construct the message
         if ($acceptLanguage == "en") {
             $message = "Hello, my name is $customerName.\n" .
                        "Here are my order details:\n" . $uuid . "\n" .
                        $orderDetails .
                        "Shipping Address: $customerAddress\n\n$customer_address_details\n" .
-                       "Phone: $customerPhone\n";
+                       "Phone: $customerPhone\n" .
+                       "Address Link: $customer_address_link\n"; // Add the address link here
             
             if ($shippingCost != 0) {
                 $message .= "Shipping: $shippingCost\n";
@@ -747,7 +750,8 @@ class OrderController extends Controller
                        "إليكم تفاصيل طلبي:\n" . $uuid . "\n" .
                        $orderDetails .
                        "عنوان التوصيل: $customerAddress\n\n$customer_address_details\n" .
-                       "الهاتف: $customerPhone\n";
+                       "الهاتف: $customerPhone\n" .
+                       "رابط العنوان: $customer_address_link\n"; // Add the address link here
             
             if ($shippingCost != 0) {
                 $message .= "تكلفة التوصيل: $shippingCost\n";

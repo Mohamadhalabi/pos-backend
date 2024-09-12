@@ -194,7 +194,7 @@ class CouponController extends Controller
 
     }
 
-    public function update(UpdateRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $coupon = Coupon::findOrFail($id);
         $coupon->code = $request->code;

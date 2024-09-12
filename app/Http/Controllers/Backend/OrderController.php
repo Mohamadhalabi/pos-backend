@@ -428,23 +428,19 @@ class OrderController extends Controller
     public function completed($id)
     {
 
-        $order = Order::query()->where('uuid', $id)->first();
+        $order = Order::where('uuid', $id)->firstOrFail();
 
-        $order_products = OrdersProducts::query()->where('order_id', $order->id)->get();
-
-        foreach($order_products as $order_product)
-        {
+        $order_products = OrdersProducts::where('order_id', $order->id)->get();
+        
+        foreach($order_products as $order_product) {
+            $product = Product::find($order_product->product_id);
             
+            if ($product) {
+                $product->quantity = max(0, $product->quantity - $order_product->quantity);
+                $product->save();
+            }
         }
-
-        $products = Product::whereIn('id',$order_products)->get();
-
-        foreach($products as $prod){
-
-        }
-
-
-
+        
 
         if (empty($order)) {
             return abort(404);

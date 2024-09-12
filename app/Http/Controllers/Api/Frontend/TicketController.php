@@ -137,12 +137,14 @@ class TicketController extends Controller
         $name = User::where('id',$id)->first();
 
         $nameEmail = $name->name;
+
+        $user_uuid = $name->phone;
         
 
-        $to = $fromEmail->value; 
-        $subject = $request->title;
-        $message = "شكوى جديدة من :" .$nameEmail. " " .$request->message;
-    
+        $to = $fromEmail->value; // Make sure $fromEmail is an object and has a 'value' property
+        $subject = $request->title; // Make sure $request->title is set
+        $message = "شكوى جديدة من: " . $nameEmail . " (" . $user_uuid . ") " . $request->message; // Adding space and clarity for readability
+            
         Mail::raw($message, function ($mail) use ($to, $subject) {
             $mail->to($to)
                 ->subject($subject);
