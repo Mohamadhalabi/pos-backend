@@ -345,6 +345,7 @@ Route::group(['prefix' => 'orders', 'as' => 'orders.'], function () {
     Route::post('update/{id}', [\App\Http\Controllers\Backend\OrderController::class, 'update'])->name('update');
     Route::get('{id}/print', [\App\Http\Controllers\Backend\OrderController::class, 'print_pdf'])->name('print');
     Route::get('{id}/completed', [\App\Http\Controllers\Backend\OrderController::class, 'completed'])->name('completed');
+    Route::get('{id}/paid', [\App\Http\Controllers\Backend\OrderController::class, 'paid'])->name('paid');
     Route::get('{id}/refund', [\App\Http\Controllers\Backend\OrderController::class, 'order_refund'])->name('refund');
     Route::get('{id}/cancel', [\App\Http\Controllers\Backend\OrderController::class, 'cancel'])->name('cancel');
     Route::post('datatable', [\App\Http\Controllers\Backend\OrderController::class, 'datatable'])->name('datatable');

@@ -71,6 +71,7 @@ class OrderController extends Controller
         // $datatable_columns['user'] = 'users.name';
         $datatable_columns['total'] = 'total';
         $datatable_columns['status'] = 'status';
+        $datatable_columns['payment_status'] = 'payment_status';
         $datatable_columns['created_at'] = 'created_at';
         $datatable_columns['actions'] = 'actions';
         
@@ -245,7 +246,6 @@ class OrderController extends Controller
                     $class = 'badge-default text-dark';
                 }
                 $html = '<span class="badge ' . $class . ' badge-lg fw-bold small ">' . $q->payment_status . '</span>';
-                $html .= '<span class="badge badge-light-primary mt-3 badge-lg fw-bold  small">' . trans('backend.order.' . $q->payment_method) . '</span>';
                 return $html;
 //                return $html;
             })
@@ -450,6 +450,24 @@ class OrderController extends Controller
         $order->save();
 
         return redirect()->back()->with('success', 'Order is completed');
+    }
+
+    function paid($id)
+    {
+        
+        $order = Order::where('uuid', $id)->firstOrFail();
+        
+
+
+        if (empty($order)) {
+            return abort(404);
+        }
+
+        $order->payment_status = "paid";
+        $order->save();
+
+        return redirect()->back()->with('success', 'Order is paid');
+
     }
     #endregion
 

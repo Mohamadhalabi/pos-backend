@@ -5,8 +5,18 @@
             <h3 class="card-title align-items-start flex-column">
                 <span class="card-label fw-bolder text-dark">{{__('backend.order.details')}}</span>
             </h3>
-            @if($order->status =="processing")
             <div class="card-toolbar">
+            @if($order->payment_status =="unpaid")
+                <div class="">
+                    <button type="button" class="btn btn-info" style="margin-right:10px">
+                        <a style="color:white" href="{{auth('admin')->check() ? route('backend.orders.paid', $order->uuid) : route('seller.orders.download' ,$order->uuid)}}">
+                            Convert to paid
+                        </a>
+                    </button>
+                </div>
+            @endif
+                @if($order->status =="processing")
+
                 <div class="">
                     <button type="button" class="btn btn-primary">
                         <a style="color:white" href="{{auth('admin')->check() ? route('backend.orders.completed', $order->uuid) : route('seller.orders.download' ,$order->uuid)}}">
@@ -21,8 +31,9 @@
                         </a>
                     </button>
                 </div>
+                @endif
+
             </div>
-            @endif
         </div>
         <div class="card-body">
             <div class="col-12">

@@ -772,9 +772,15 @@ class OrderController extends Controller
     
         $user = User::where('id',$request->customer['userId'])->first();
         if($user !=null){
-            if($user->email != null){
-                Mail::to($user->email)->send(new OrderCreated($order, $whatsappLink));            
-            }
+            if ($user->email != null) {
+                try {
+                    Mail::to($user->email)->send(new OrderCreated($order, $whatsappLink));
+                } catch (\Exception $e) {
+                    // Log the error or handle it
+                    \Log::error('Failed to send email to user: ' . $user->email . '. Error: ' . $e->getMessage());
+                    // You can also implement further actions like notifying the admin or setting a flag
+                }
+            }            
 
             $user->state = $customer_address_details;
             $user->save();

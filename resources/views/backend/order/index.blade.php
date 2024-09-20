@@ -20,6 +20,7 @@
                             <!-- <th class="small">{{trans('backend.order.user')}}</th> -->
                             <th class="small">{{trans('backend.order.total')}}</th>
                             <th class="small">{{trans('backend.global.status')}}</th>
+                            <th class="small">{{trans('backend.global.payment_status')}}</th>
                             <th class="small">{{trans('backend.seller.date')}}</th>
                             <th class="min-w-125px">{{trans('backend.global.actions')}}</th>
                         </tr>
