@@ -29,7 +29,7 @@ class UpdateRequest extends FormRequest
         return [
 //            'avatar' => Rule::requiredIf($user->avatar == null || request()->avatar_remove != null ),
             'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.request()->segment(3),
+            'email' => 'unique:users,email,'.request()->segment(3),
             'phone' => 'required|unique:users,phone,'.request()->segment(3),
 //            'state' => '',
             'street' => '',

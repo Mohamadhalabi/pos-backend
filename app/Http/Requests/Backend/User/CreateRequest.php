@@ -26,7 +26,7 @@ class CreateRequest extends FormRequest
         return [
 //            'avatar' => 'required',
             'name' => 'required',
-            'email' => 'required|email|unique:users',
+            'email' => 'unique:users',
             'phone' => 'required|unique:users',
             // 'country' => 'required',
             // 'city' => 'required',

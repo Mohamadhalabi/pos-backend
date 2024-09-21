@@ -40,8 +40,8 @@
 
                         <div class="col-12 col-md-6">
                             <div class="  mb-10">
-                                <label for="email" class="required form-label">{{trans('backend.user.email')}}</label>
-                                <input required autocomplete="off" type="email" class="form-control" id="email"
+                                <label for="email" class=" form-label">{{trans('backend.user.email')}}</label>
+                                <input autocomplete="off" type="email" class="form-control" id="email"
                                        name="email" value="{{old('email')}}"
                                        placeholder="{{trans('backend.user.email')}}"/>
                                 @error('email') <b class="text-danger"><i
