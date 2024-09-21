@@ -648,19 +648,18 @@ class OrderController extends Controller
     function create_order(Request $request)
     {
         $order = new Order();
-
+    
         do {
             // Generate a UUID that starts with "MB" followed by 6 random numbers
             $uuid = 'MB' . str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
         } while (Order::where('uuid', $uuid)->exists());
         
         $order->uuid = $uuid;
-            
+    
         $coupon = Coupon::where('code', $request->customer['coupon_code'])->first();
     
-
         $acceptLanguage = $request->header('Accept-Language');
-
+    
         // Set customer details
         $order->user_id = $request->customer['userId'];
         $order->address = $request->customer['address'];
@@ -668,15 +667,16 @@ class OrderController extends Controller
         $order->note = $request->customer['name'];
         $order->shipment_description = $request->customer['address_details'];
         $order->status = "processing";
-        if($request->customer['shipping_cost'] == null){
+    
+        if ($request->customer['shipping_cost'] == null) {
             $shippingCost = 0;
             $order->shipping = 0;  
-        }
-        else{
+        } else {
             $shippingCost = $request->customer['shipping_cost'];
             $order->shipping = $request->customer['shipping_cost'];
         }
-        if($coupon == null){
+    
+        if ($coupon == null) {
             $order->coupon_id = null;
         } else {
             $order->coupon_id = $coupon->id;
@@ -705,19 +705,20 @@ class OrderController extends Controller
                 
                 // Generate the order details summary
                 if ($acceptLanguage == "en") {
-                    $orderDetails .= "Product: " . $prod->name . "\n" .
-                    "SKU: " . $product['code'] . "\n" .
+                    $orderDetails .= "Product: " . $prod->title . "\n" .
                     "Quantity: " . $product['quantity'] . "\n" .
-                    "Price: " . $product['price'] . "\n\n";
+                    "Price: " . $product['price'] . "\n\n\n\n\n";
                 } elseif ($acceptLanguage == "ar") {
-                    $orderDetails .= "المنتج: " . $prod->name . "\n" .
-                    "رمز المنتج: " . $product['code'] . "\n" .
+                    $orderDetails .= "المنتج: " . $prod->title . "\n" .
                     "الكمية: " . $product['quantity'] . "\n" .
-                    "السعر: " . $product['price'] . "\n\n";
+                    "السعر: " . $product['price'] . "\n\n\n\n\n";
+                } elseif ($acceptLanguage == "tr") { // Turkish language support
+                    $orderDetails .= "Ürün: " . $prod->title . "\n" .
+                    "Miktar: " . $product['quantity'] . "\n" .
+                    "Fiyat: " . $product['price'] . "\n\n\n\n\n";
                 }
             }
         }
-        
     
         // Prepare WhatsApp link
         $contactNumber = get_setting('contact_whatsapp'); // Retrieve the contact number
@@ -727,9 +728,9 @@ class OrderController extends Controller
         $customer_address_details = $request->customer['address_details'];
         $vatCost = $request->customer['vat'];
         $total = $request->customer['total'];
-
+    
         $customer_address_link = "https://maps.google.com/?q={$request->customer['lat']},{$request->customer['long']}";
-
+    
         // Construct the message
         if ($acceptLanguage == "en") {
             $message = "Hello, my name is $customerName.\n" .
@@ -738,31 +739,42 @@ class OrderController extends Controller
                        "Shipping Address: $customerAddress\n\n$customer_address_details\n" .
                        "Phone: $customerPhone\n" .
                        "Address Link: $customer_address_link\n"; // Add the address link here
-            
+    
             if ($shippingCost != 0) {
                 $message .= "Shipping: $shippingCost\n";
             }
             
             $message .= "VAT: $vatCost\n" .
                         "Total: TL $total";
-        } else if ($acceptLanguage == "ar") {
+        } elseif ($acceptLanguage == "ar") {
             $message = "مرحباً، اسمي $customerName.\n" .
                        "إليكم تفاصيل طلبي:\n" . $uuid . "\n" .
                        $orderDetails .
                        "عنوان التوصيل: $customerAddress\n\n$customer_address_details\n" .
                        "الهاتف: $customerPhone\n" .
                        "رابط العنوان: $customer_address_link\n"; // Add the address link here
-            
+    
             if ($shippingCost != 0) {
                 $message .= "تكلفة التوصيل: $shippingCost\n";
             }
-            
+    
             $message .= "الضريبة: $vatCost\n" .
                         "المجموع: TL $total";
+        } elseif ($acceptLanguage == "tr") { // Turkish message construction
+            $message = "Merhaba, benim adım $customerName.\n" .
+                       "İşte sipariş detaylarım:\n" . $uuid . "\n" .
+                       $orderDetails .
+                       "Gönderim Adresi: $customerAddress\n\n$customer_address_details\n" .
+                       "Telefon: $customerPhone\n" .
+                       "Adres Linki: $customer_address_link\n"; // Add the address link here
+    
+            if ($shippingCost != 0) {
+                $message .= "Kargo Ücreti: $shippingCost\n";
+            }
+    
+            $message .= "KDV: $vatCost\n" .
+                        "Toplam: TL $total";
         }
-        
-        
-        
     
         // URL encode the message
         $encodedMessage = urlencode($message);
@@ -770,8 +782,8 @@ class OrderController extends Controller
         // Create WhatsApp link
         $whatsappLink = "https://wa.me/$contactNumber?text=$encodedMessage";
     
-        $user = User::where('id',$request->customer['userId'])->first();
-        if($user !=null){
+        $user = User::where('id', $request->customer['userId'])->first();
+        if ($user != null) {
             if ($user->email != null) {
                 try {
                     Mail::to($user->email)->send(new OrderCreated($order, $whatsappLink));
@@ -781,16 +793,16 @@ class OrderController extends Controller
                     // You can also implement further actions like notifying the admin or setting a flag
                 }
             }            
-
+    
             $user->state = $customer_address_details;
             $user->save();
         }
-
-
+    
         return response()->json([
             'whatsapp_link' => $whatsappLink,
         ]);
     }
+    
     
     function notify_me(Request $request)
     {
