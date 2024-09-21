@@ -48,7 +48,6 @@ class StatisticsController extends Controller
     {
 
         $sales = Order::query()
-            ->whereIn('type', [Order::$order, Order::$pin_code])
             ->where('status', [Order::$processing, Order::$completed])
             ->where('payment_status', 'paid');
         if ($request->start_date != null) {

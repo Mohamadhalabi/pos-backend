@@ -101,8 +101,8 @@
                                            id="date-picker" name="dates-picker" value="{{old('dates-picker')}}"/>
                                 </div>
                             </div>
-                            <input type="hidden" id="start_date" name="start_date" value="{{date("Y-m-d H:i:s")}}">
-                            <input type="hidden" id="end_date" name="end_date" value="{{date("Y-m-d H:i:s")}}">
+                            <input type="hidden" id="start_date" name="start_date" value="{{date("Y-m-d")}}">
+                            <input type="hidden" id="end_date" name="end_date" value="{{date("Y-m-d")}}">
                         </div>
                     </div>
                     <div class="col">
@@ -152,15 +152,15 @@
             "maxYear": null,
 
             "locale": {
-                "format": "YYYY-MM-DD hh:mm A",
+                "format": "YYYY-MM-DD",
                 "firstDay": 1
             },
             "alwaysShowCalendars": true,
-            "startDate": "{{old('start_date' ,date('Y-m-d H:i:s'))}}",
-            "endDate": "{{old('end_date' ,date('Y-m-d H:i:s'))}}",
+            "startDate": "{{old('start_date' ,date('Y-m-d'))}}",
+            "endDate": "{{old('end_date' ,date('Y-m-d'))}}",
         }, function (start, end, label) {
-            $('#start_date').val(start.format('YYYY-MM-DD hh:mm A'));
-            $('#end_date').val(end.format('YYYY-MM-DD hh:mm A'));
+            $('#start_date').val(start.format('YYYY-MM-DD'));
+            $('#end_date').val(end.format('YYYY-MM-DD'));
         });
 
     </script>

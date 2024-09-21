@@ -121,16 +121,16 @@
 
 
             "locale": {
-                "format": "YYYY-MM-DD hh:mm A",
+                "format": "YYYY-MM-D",
                 "firstDay": 1
             },
             "alwaysShowCalendars": true,
             "startDate":"{{old('start_date' ,$coupon->starts_at)}}",
             "endDate": "{{old('end_date' ,$coupon->ends_at)}}",
         }, function (start, end, label) {
-            // $star_date = start.format('YYYY-MM-DD hh:mm A')
-            $('#start_date').val(start.format('YYYY-MM-DD hh:mm A'));
-            $('#end_date').val(end.format('YYYY-MM-DD hh:mm A'));
+            // $star_date = start.format('YYYY-MM-DD')
+            $('#start_date').val(start.format('YYYY-MM-DD'));
+            $('#end_date').val(end.format('YYYY-MM-DD'));
         });
         $(document).ready(function () {
             var type = $("#type").val();

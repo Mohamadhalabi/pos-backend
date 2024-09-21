@@ -72,7 +72,7 @@ class CategoryController extends Controller
                 $gallery[] = media_file($image);
             }
             
-            $category = Category::where('id', $product->category_id)->first();
+            $category = Category::where('id', $product->category_id)->whereNull('deleted_at')->first();
 
 
             $products_attribute = ProductsAttribute::where('product_id',$product->id)->pluck('sub_attribute_id')->toArray();
@@ -140,7 +140,7 @@ class CategoryController extends Controller
         $products_data = [];
     
         foreach ($products as $product) {
-            $category = Category::where('id', $product->category_id)->first();
+            $category = Category::where('id', $product->category_id)->whereNull('deleted_at')->first();
     
             // Handle the gallery images
             $gallery = json_decode($product->gallery, true) ?? [];
@@ -218,7 +218,7 @@ class CategoryController extends Controller
     
         if ($data_product->isNotEmpty()) {
             foreach ($data_product as $product) {
-                $cat = Category::where('id', $product->category_id)->first();
+                $cat = Category::where('id', $product->category_id)->whereNull('deleted_at')->first();
         
                 // Handle the gallery images
                 $gallery = json_decode($product->gallery, true) ?? [];
