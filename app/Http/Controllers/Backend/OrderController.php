@@ -1220,5 +1220,17 @@ class OrderController extends Controller
     }
     //endregion
 
+    function refund($id)
+    {
+        $order = Order::query()->where('uuid', $id)->first();
+        
+        $order->status = "refunded";
+
+        $order->save();
+
+        return redirect()->back()->with('success', 'Order is refunded');
+
+    }
+
 }
 

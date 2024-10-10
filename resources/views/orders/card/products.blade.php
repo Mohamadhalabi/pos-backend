@@ -33,6 +33,16 @@
                 </div>
                 @endif
 
+                @if($order->payment_status =="paid" && $order->status =="completed")
+                <div class="" style="margin-left:10px">
+                    <button type="button" class="btn btn-danger">
+                    <a style="color:white" href="{{auth('admin')->check() ? route('backend.orders.refund', $order->uuid) : route('seller.orders.download' ,$order->uuid)}}">
+                    Refund This order
+                        </a>
+                    </button>
+                </div>
+                @endif
+
             </div>
         </div>
         <div class="card-body">
