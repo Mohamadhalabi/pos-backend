@@ -1222,14 +1222,32 @@ class OrderController extends Controller
 
     function refund($id)
     {
+        // Find the order by UUID
         $order = Order::query()->where('uuid', $id)->first();
         
+        // Set the order status to 'refunded'
         $order->status = "refunded";
-
+    
+        // Get the products associated with the order
+        $order_products = OrdersProducts::where('order_id', $order->id)->get();
+    
+        // Loop through each ordered product to increase the quantity of the related product
+        foreach ($order_products as $order_product) {
+            // Get the product by its ID
+            $product = Product::find($order_product->product_id);
+            
+            // Increase the product's quantity by the ordered quantity
+            if ($product) {
+                $product->quantity += $order_product->quantity;
+                $product->save(); // Save the updated product quantity
+            }
+        }
+    
+        // Save the refunded status of the order
         $order->save();
-
+    
+        // Redirect back with a success message
         return redirect()->back()->with('success', 'Order is refunded');
-
     }
 
 }
